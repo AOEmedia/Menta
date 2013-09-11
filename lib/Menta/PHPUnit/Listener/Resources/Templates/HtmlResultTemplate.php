@@ -26,6 +26,7 @@
 		li { list-style: none; padding: 0 5px; margin: 0 0 0 5px; }
 		.legend li { border-top: 1px solid; border-left: 5px solid; float: left; }
 		li.label { border: none; font-weight: bold; }
+        li.screenshot { margin-bottom: 5px; margin-top: 5px; }
 		.legend,
 		.bar { overflow: hidden; margin-bottom: 10px; }
 		#progress-wrapper { width: auto; height: 30px; }

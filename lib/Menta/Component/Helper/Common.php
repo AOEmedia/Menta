@@ -372,5 +372,15 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		}
 	}
 
+	/**
+	 * Move mouse to given element
+	 *
+	 * @param string|array|\WebDriver\Element $element
+	 */
+	public function moveTo($element) {
+		$elementObject = $this->getElement($element);
+		$this->getSession()->moveto(array('element' => $elementObject->getID()));
+	}
+
 }
 

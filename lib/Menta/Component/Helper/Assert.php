@@ -177,5 +177,31 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
 		$this->getTest()->assertNull($attribute, $message);
 	}
 
+	/**
+	 * Checks if element is visible
+	 *
+	 * @param string|array|\WebDriver\Element $element
+	 * @param string $message
+	 */
+	public function assertElementVisible($element, $message='') {
+		if (empty($message)) {
+			$message = sprintf("Element '%s' is not visible", $this->getHelperCommon()->element2String($element));
+		}
+		$this->getTest()->assertTrue($this->getHelperCommon()->isVisible($element), $message);
+	}
+
+	/**
+	 * Checks if element is visible
+	 *
+	 * @param string|array|\WebDriver\Element $element
+	 * @param string $message
+	 */
+	public function assertElementNotVisible($element, $message='') {
+		if (empty($message)) {
+			$message = sprintf("Element '%s' is visible", $this->getHelperCommon()->element2String($element));
+		}
+		$this->getTest()->assertFalse($this->getHelperCommon()->isVisible($element), $message);
+	}
+
 }
 
