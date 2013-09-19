@@ -11,6 +11,7 @@ class Menta_PHPUnit_Listener_HtmlResultPrinter extends Menta_PHPUnit_Listener_Ab
 	 * @var string
 	 */
 	protected $templateFile = '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/HtmlResultTemplate.php';
+    protected $viewClass = 'Menta_PHPUnit_Listener_Resources_HtmlResultView';
 
 	/**
 	 * @var array
@@ -29,7 +30,7 @@ class Menta_PHPUnit_Listener_HtmlResultPrinter extends Menta_PHPUnit_Listener_Ab
 
 	protected $count = array();
 
-	protected $viewClass = 'Menta_PHPUnit_Listener_Resources_HtmlResultView';
+
 
 	public function startTest(PHPUnit_Framework_Test $test) {}
 

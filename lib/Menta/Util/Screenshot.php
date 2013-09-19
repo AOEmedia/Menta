@@ -24,6 +24,8 @@ class Menta_Util_Screenshot {
 
 	protected $id;
 
+    protected $variant;
+
 	/**
 	 * Constructor
 	 */
@@ -48,6 +50,13 @@ class Menta_Util_Screenshot {
 	 * @return string
 	 */
 	public function getId() {
+        if (is_null($this->id)) {
+            $id = $this->getTitle();
+            if (!is_null($this->variant)) {
+                $id .= '.' . $this->variant;
+            }
+            return $id;
+        }
 		return $this->id;
 	}
 
@@ -144,6 +153,14 @@ class Menta_Util_Screenshot {
 
 	public function getType() {
 		return $this->type;
+	}
+
+	public function setVariant($variant) {
+		$this->variant = $variant;
+	}
+
+	public function getVariant() {
+		return $this->variant;
 	}
 
 }
