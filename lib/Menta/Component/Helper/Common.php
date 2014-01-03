@@ -108,6 +108,22 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		return $element;
 	}
 
+    /**
+     * Get elements
+     *
+     * @throws Exception
+     * @param $element
+     * @param $parent
+     * @return array
+     */
+    public function getElements($element, $parent=NULL) {
+        if (is_null($parent)) {
+            $parent = $this->getSession();
+        }
+        $elements = $parent->elements($this->parseLocator($element));
+        return $elements;
+    }
+
 	/**
 	 * Convert an element to a string for fail message purposes
 	 *
