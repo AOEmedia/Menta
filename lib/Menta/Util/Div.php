@@ -27,4 +27,7 @@ class Menta_Util_Div {
 		return substr(str_shuffle($chars), 0, $length);
 	}
 
+	public static function containsText($text) {
+		return "contains(concat(' ', text() , ' '), ' $text ')";
+	}
 }
