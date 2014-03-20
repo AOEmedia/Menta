@@ -34,7 +34,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	/**
 	 * Set default timeout
 	 *
-	 * @param $defaultSleep
+	 * @param $defaultSleep in seconds
 	 * @return Menta_Component_Helper_Wait
 	 */
 	public function setDefaultSleep($defaultSleep) {
@@ -47,7 +47,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 *
 	 * @static
 	 * @param $callback
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool|mixed
 	 */
@@ -69,7 +69,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for element present
 	 *
 	 * @param string $locator
-	 * @param integer $timeout
+	 * @param integer $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -85,7 +85,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for element not present
 	 *
 	 * @param string|array|\WebDriver\Element $locator
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -101,7 +101,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for text present
 	 *
 	 * @param string|array|\WebDriver\Element $text
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -117,7 +117,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for text not present
 	 *
 	 * @param string|array|\WebDriver\Element $text
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -133,7 +133,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for condition (js snippet)
 	 *
 	 * @param string|array|\WebDriver\Element $jsSnippet
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -149,7 +149,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for element visible
 	 *
 	 * @param string $locator
-	 * @param integer $timeout
+	 * @param integer $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -165,7 +165,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 * Wait for element not visible
 	 *
 	 * @param string|array|\WebDriver\Element $locator
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -182,7 +182,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 *
 	 * @deprecated
 	 * @param string $locator
-	 * @param integer $timeout
+	 * @param integer $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
@@ -195,7 +195,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
 	 *
 	 * @deprecated
 	 * @param string|array|\WebDriver\Element $locator
-	 * @param int $timeout
+	 * @param int $timeout in seconds
 	 * @param float $sleep in seconds
 	 * @return bool
 	 */
