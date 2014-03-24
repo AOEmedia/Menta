@@ -56,7 +56,7 @@ class Menta_PHPUnit_Listener_HtmlResultPrinter extends Menta_PHPUnit_Listener_Ab
 		$method = $class->getMethod($test->getName(false));
 		$docComment = $method->getDocComment();
 		$docComment = preg_replace('#[ \t]*(?:\/\*\*|\*\/|\*)?[ ]{0,1}(.*)?#', '$1', $docComment);
-		$docComment - "\n".$docComment;
+		$docComment = "\n".$docComment;
 		$endOfDescription = strpos($docComment, "\n@");
 		if ($endOfDescription !== false) {
 			$docComment = substr($docComment, 0, $endOfDescription);
