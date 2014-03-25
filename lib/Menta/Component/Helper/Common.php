@@ -171,7 +171,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool
 	 */
 	public function isVisible($element) {
-		$this->doAction(array($this->getElement($element), 'displayed'));
+		$this->doAction($element, 'displayed');
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return boolean
 	 */
 	public function isSelected($element) {
-		$this->doAction(array($this->getElement($element), 'selected'));
+		$this->doAction($element, 'selected');
 	}
 
 	/**
@@ -272,7 +272,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return string
 	 */
 	public function getText($element) {
-		$this->doAction(array($this->getElement($element), 'text'));
+		$this->doAction($element, 'text');
 	}
 
 	/**
@@ -282,7 +282,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return void
 	 */
 	public function click($element) {
-		$this->doAction(array($this->getElement($element), 'click'));
+		$this->doAction($element, 'click');
 	}
 
 	/**
@@ -331,7 +331,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		} else {
 			throw new Exception('Expecting label to begin with "label=" or "value="');
 		}
-		$this->doAction(array($option, 'click'));
+		$option->click();
 	}
 
 	/**
@@ -341,7 +341,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool|string
 	 */
 	public function getSelectedLabel($element) {
-		$label               = FALSE;
+		$label = FALSE;
 		$firstSelectedOption = $this->getFirstSelectedOption($element);
 		if ($firstSelectedOption !== FALSE) {
 			$label = $firstSelectedOption->text();
@@ -356,7 +356,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool|string
 	 */
 	public function getSelectedValue($element) {
-		$label               = FALSE;
+		$label = FALSE;
 		$firstSelectedOption = $this->getFirstSelectedOption($element);
 		if ($firstSelectedOption !== FALSE) {
 			/* @var $firstSelectedOption \Webdriver\Element */
@@ -428,22 +428,30 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		$this->retryActionLimit = $retryActionLimit;
 	}
 
-	protected function doAction($action, array $arguments = array()) {
-		if (!is_callable($action)) {
-			throw new InvalidArgumentException('$action argument must be a callable');
-		}
-
-		$count = 0;
-		while ($count < $this->getRetryActionLimit()) {
-			try {
-				return call_user_func_array($action, $arguments);
-			} catch (WebDriver\Exception\StaleElementReference $e) {
-				$count++;
-				if ($count > $this->getRetryActionLimit()) {
-					throw $e;
+	/**
+	 * Retry action $this->getRetryActionLimit() times to avoid random stale reference exception issues
+	 *
+	 * @param string $element
+	 * @param string $action
+	 * @param array $arguments
+	 * @throws WebDriver\Exception\StaleElementReference
+	 * @return mixed
+	 */
+	protected function doAction($element, $action, array $arguments = array()) {
+		if ($element instanceof \WebDriver\Element) {
+			return call_user_func_array(array($element, $action), $arguments);
+		} else {
+			$count = 0;
+			while ($count < $this->getRetryActionLimit()) {
+				try {
+					return call_user_func_array(array($this->getElement($element), $action), $arguments);
+				} catch (WebDriver\Exception\StaleElementReference $e) {
+					$count++;
+					if ($count > $this->getRetryActionLimit()) {
+						throw $e;
+					}
 				}
 			}
 		}
 	}
-
 }
