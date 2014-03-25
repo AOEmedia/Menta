@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Common helper
  *
@@ -13,6 +14,14 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @var string
 	 */
 	protected $mainDomain;
+
+	/**
+	 * Number of times to retry action after WebDriver\Exception\StaleElementReference
+	 *
+	 * @link http://darrellgrainger.blogspot.de/2012/06/staleelementexception.html
+	 * @var int
+	 */
+	protected $retryActionLimit = 5;
 
 	/**
 	 * Open an url prefixed with the previously configured browserUrl
@@ -67,7 +76,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 			// already the correct element => do nothing
 		} elseif (substr($locator, 0, 6) == 'xpath=') {
 			$locator = array('using' => \WebDriver\LocatorStrategy::XPATH, 'value' => substr($locator, 6));
-		} elseif (strpos($locator, '/') !== false) {
+		} elseif (strpos($locator, '/') !== FALSE) {
 			$locator = array('using' => \WebDriver\LocatorStrategy::XPATH, 'value' => $locator);
 		} elseif (substr($locator, 0, 3) == 'id=') {
 			$locator = array('using' => \WebDriver\LocatorStrategy::ID, 'value' => substr($locator, 3));
@@ -89,11 +98,11 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * Auto-detect element
 	 *
 	 * @throws Exception
-	 * @param $element
+	 * @param string|\WebDriver\Element $element
 	 * @param $parent
 	 * @return \WebDriver\Element
 	 */
-	public function getElement($element, $parent=NULL) {
+	public function getElement($element, $parent = NULL) {
 		if ($element instanceof \WebDriver\Element) {
 			// already the correct element => do nothing
 		} else {
@@ -108,21 +117,21 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		return $element;
 	}
 
-    /**
-     * Get elements
-     *
-     * @throws Exception
-     * @param $element
-     * @param $parent
-     * @return array
-     */
-    public function getElements($element, $parent=NULL) {
-        if (is_null($parent)) {
-            $parent = $this->getSession();
-        }
-        $elements = $parent->elements($this->parseLocator($element));
-        return $elements;
-    }
+	/**
+	 * Get elements
+	 *
+	 * @throws Exception
+	 * @param $element
+	 * @param $parent
+	 * @return array
+	 */
+	public function getElements($element, $parent = NULL) {
+		if (is_null($parent)) {
+			$parent = $this->getSession();
+		}
+		$elements = $parent->elements($this->parseLocator($element));
+		return $elements;
+	}
 
 	/**
 	 * Convert an element to a string for fail message purposes
@@ -162,7 +171,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool
 	 */
 	public function isVisible($element) {
-		return $this->getElement($element)->displayed();
+		$this->doAction(array($this->getElement($element), 'displayed'));
 	}
 
 	/**
@@ -172,7 +181,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool
 	 */
 	public function isTextPresent($text) {
-		return (strpos($this->getSession()->source(), $text) !== false);
+		return (strpos($this->getSession()->source(), $text) !== FALSE);
 	}
 
 	/**
@@ -182,7 +191,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return boolean
 	 */
 	public function isSelected($element) {
-		return $this->getElement($element)->selected();
+		$this->doAction(array($this->getElement($element), 'selected'));
 	}
 
 	/**
@@ -197,11 +206,12 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	/**
 	 * Get eval (run javascript on client)
 	 *
-	 * @param $jsSnippet
+	 * @param string $jsSnippet
 	 * @param array $args
 	 * @return mixed (snippet return value)
+	 * @throws Exception
 	 */
-	public function getEval($jsSnippet, array $args=array()) {
+	public function getEval($jsSnippet, array $args = array()) {
 		// no tricks needed in selenium 2
 		$jsSnippet = preg_replace('/^.*getUserWindow\(\)\./', '', $jsSnippet);
 
@@ -211,7 +221,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		}
 
 		try {
-			$result = $this->getSession()->execute(array('script'=> $jsSnippet, 'args' => $args));
+			$result = $this->getSession()->execute(array('script' => $jsSnippet, 'args' => $args));
 		} catch (Exception $e) {
 			throw new Exception("Error while executing snippet '$jsSnippet'");
 		}
@@ -228,7 +238,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @param string $windowHandle
 	 * @return void
 	 */
-	public function resizeBrowserWindow($width=1280, $height=1024, $x=0, $y=0, $windowHandle='main') {
+	public function resizeBrowserWindow($width = 1280, $height = 1024, $x = 0, $y = 0, $windowHandle = 'main') {
 		$this->getSession()->window($windowHandle)->position(array('x' => $x, 'y' => $y));
 		$this->getSession()->window($windowHandle)->size(array('width' => $width, 'height' => $height));
 	}
@@ -239,7 +249,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @param string $windowHandle
 	 * @return void
 	 */
-	public function focusWindow($windowHandle='main') {
+	public function focusWindow($windowHandle = 'main') {
 		$this->getSession()->window($windowHandle);
 	}
 
@@ -250,7 +260,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return int
 	 */
 	public function getElementCount($locator) {
-		$locator = $this->parseLocator($locator);
+		$locator  = $this->parseLocator($locator);
 		$elements = $this->getSession()->elements($locator);
 		return count($elements);
 	}
@@ -262,7 +272,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return string
 	 */
 	public function getText($element) {
-		return $this->getElement($element)->text();
+		$this->doAction(array($this->getElement($element), 'text'));
 	}
 
 	/**
@@ -272,7 +282,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return void
 	 */
 	public function click($element) {
-		$this->getElement($element)->click();
+		$this->doAction(array($this->getElement($element), 'click'));
 	}
 
 	/**
@@ -284,7 +294,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @param bool $leaveFieldAfterwards
 	 * @return void
 	 */
-	public function type($element, $text, $resetContent=false, $leaveFieldAfterwards=false) {
+	public function type($element, $text, $resetContent = FALSE, $leaveFieldAfterwards = FALSE) {
 		$element = $this->getElement($element);
 		if ($resetContent) {
 			// got to the end, mark everything to the beginning to overwrite existing content
@@ -294,7 +304,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		if ($leaveFieldAfterwards) {
 			try {
 				$element->value(array('value' => array(\WebDriver\Key::TAB)));
-			} catch (Exception $e){
+			} catch (Exception $e) {
 				echo $e->getMessage();
 			}
 		}
@@ -314,14 +324,14 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		$element = $this->getElement($element);
 		if (substr($option, 0, 6) == 'value=') {
 			$option = substr($option, 6);
-			$option = $element->element(\WebDriver\LocatorStrategy::XPATH, 'option[@value="'.$option.'"]');
+			$option = $element->element(\WebDriver\LocatorStrategy::XPATH, 'option[@value="' . $option . '"]');
 		} elseif (substr($option, 0, 6) == 'label=') {
 			$option = substr($option, 6);
-			$option = $element->element(\WebDriver\LocatorStrategy::XPATH, 'option[normalize-space(text())="'.$option.'"]');
+			$option = $element->element(\WebDriver\LocatorStrategy::XPATH, 'option[normalize-space(text())="' . $option . '"]');
 		} else {
 			throw new Exception('Expecting label to begin with "label=" or "value="');
 		}
-		$option->click();
+		$this->doAction(array($option, 'click'));
 	}
 
 	/**
@@ -331,9 +341,9 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool|string
 	 */
 	public function getSelectedLabel($element) {
-		$label = false;
+		$label               = FALSE;
 		$firstSelectedOption = $this->getFirstSelectedOption($element);
-		if ($firstSelectedOption !== false) {
+		if ($firstSelectedOption !== FALSE) {
 			$label = $firstSelectedOption->text();
 		}
 		return $label;
@@ -346,9 +356,10 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool|string
 	 */
 	public function getSelectedValue($element) {
-		$label = false;
+		$label               = FALSE;
 		$firstSelectedOption = $this->getFirstSelectedOption($element);
-		if ($firstSelectedOption !== false) { /* @var $firstSelectedOption \Webdriver\Element */
+		if ($firstSelectedOption !== FALSE) {
+			/* @var $firstSelectedOption \Webdriver\Element */
 			$label = $firstSelectedOption->getAttribute('value');
 		}
 		return $label;
@@ -363,12 +374,13 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	public function getFirstSelectedOption($element) {
 		$element = $this->getElement($element);
 		$options = $element->elements(\WebDriver\LocatorStrategy::XPATH, './/option');
-		foreach ($options as $option) { /* @var $option \Webdriver\Element */
+		foreach ($options as $option) {
+			/* @var $option \Webdriver\Element */
 			if ($option->selected()) {
 				return $option;
 			}
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -398,5 +410,40 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		$this->getSession()->moveto(array('element' => $elementObject->getID()));
 	}
 
-}
+	/**
+	 * Get number of times to retry action after WebDriver\Exception\StaleElementReference
+	 *
+	 * @return int
+	 */
+	public function getRetryActionLimit() {
+		return $this->retryActionLimit;
+	}
 
+	/**
+	 * Set number of times to retry action after WebDriver\Exception\StaleElementReference
+	 *
+	 * @param int $retryActionLimit
+	 */
+	public function setRetryActionLimit($retryActionLimit) {
+		$this->retryActionLimit = $retryActionLimit;
+	}
+
+	protected function doAction($action, array $arguments = array()) {
+		if (!is_callable($action)) {
+			throw new InvalidArgumentException('$action argument must be a callable');
+		}
+
+		$count = 0;
+		while ($count < $this->getRetryActionLimit()) {
+			try {
+				return call_user_func_array($action, $arguments);
+			} catch (WebDriver\Exception\StaleElementReference $e) {
+				$count++;
+				if ($count > $this->getRetryActionLimit()) {
+					throw $e;
+				}
+			}
+		}
+	}
+
+}
