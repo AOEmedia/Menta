@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
+        "phpunit/phpunit": "3.7.*",
         "instaclick/php-webdriver": "dev-master"
     },
     "replace": {
