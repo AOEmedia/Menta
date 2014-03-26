@@ -272,7 +272,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return string
 	 */
 	public function getText($element) {
-		$this->doAction($element, 'text');
+		return $this->doAction($element, 'text');
 	}
 
 	/**
