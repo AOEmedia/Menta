@@ -171,7 +171,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return bool
 	 */
 	public function isVisible($element) {
-		$this->doAction($element, 'displayed');
+		return $this->doAction($element, 'displayed');
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 * @return boolean
 	 */
 	public function isSelected($element) {
-		$this->doAction($element, 'selected');
+		return $this->doAction($element, 'selected');
 	}
 
 	/**
