@@ -146,7 +146,7 @@ class Menta_PHPUnit_Listener_Resources_HtmlResultView extends Menta_Util_View {
 						$result .= 'PDIFF: Exact match.';
 					}
 				} elseif ($previousPath && !is_file($previousScreenshot)) {
-					$result .= 'PDFIFF: Couldn\'t find previous file';
+					$result .= 'PDIFF: Couldn\'t find previous file ' . getcwd() . ' ' . $previousScreenshot;
 				}
 
 			} catch (Exception $e) {
