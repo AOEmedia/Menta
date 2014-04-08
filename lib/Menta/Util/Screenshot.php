@@ -26,6 +26,8 @@ class Menta_Util_Screenshot {
 
     protected $variant;
 
+    protected $processingInstructions = array();
+
 	/**
 	 * Constructor
 	 */
@@ -60,6 +62,28 @@ class Menta_Util_Screenshot {
 		return $this->id;
 	}
 
+    /**
+     * Adds an instruction to the processing instructinos
+     *
+     * @param Menta_Util_Screenshot_ProcessorInterface $instruction
+     */
+    public function addProcessingInstruction(Menta_Util_Screenshot_ProcessorInterface $instruction)
+    {
+        $this->processingInstructions[] = $instruction;
+    }
+
+    /**
+     * Processes all processing instructions
+     *
+     */
+    public function process($filename)
+    {
+        foreach ($this->processingInstructions as $instruction) { /* @var $instruction Menta_Util_Screenshot_ProcessorInterface */
+            $instruction->setImageFile($filename);
+            $instruction->process();
+        }
+    }
+
 	/**
 	 * Write image to disk
 	 *
@@ -77,6 +101,8 @@ class Menta_Util_Screenshot {
 		if ($res === false) {
 			throw new Exception("File '$filename' could not be written");
 		}
+
+        $this->process($filename);
 	}
 
 	/**
