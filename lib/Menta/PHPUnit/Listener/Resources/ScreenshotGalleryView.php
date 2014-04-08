@@ -114,6 +114,8 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
             $previousPath = $this->getPreviousPath();
             $previousScreenshot = $previousPath . DIRECTORY_SEPARATOR . $fileName;
 
+            $printSingleFile = false;
+
             if ($previousPath && is_file($previousScreenshot)) {
                 if (md5_file($directory . DIRECTORY_SEPARATOR . $fileName) != md5_file($previousScreenshot)) {
 
@@ -169,15 +171,20 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
 
 
                 } else {
-
-                    $result .= '<a class="current" title="'.$screenshot->getTitle().'" href="'.$fileName.'">';
-                        $result .= '<img src="'.$thumbnailName.'" width="'.self::THUMBNAIL_WIDTH.' " />';
-                    $result .= '</a>';
-
-                    $result .= 'PDIFF: Exact match.';
+                    $printSingleFile = true;
+                    $result .= '<div class="info">PDIFF: Exact match.</div>';
                 }
             } elseif ($previousPath && !is_file($previousScreenshot)) {
-                $result .= 'PDFIFF: Couldn\'t find previous file';
+                $printSingleFile = true;
+                $result .= '<div class="info">PDIFF: Couldn\'t find previous file</div>';
+            } else {
+                $printSingleFile = true;
+                $result .= '<div class="info">PDIFF: Couldn\'t find previous path</div>';
+            }
+            if ($printSingleFile) {
+                $result .= '<a class="current" title="'.$screenshot->getTitle().'" href="'.$fileName.'">';
+                    $result .= '<img src="'.$thumbnailName.'" width="'.self::THUMBNAIL_WIDTH.' " />';
+                $result .= '</a>';
             }
 
         } catch (Exception $e) {
