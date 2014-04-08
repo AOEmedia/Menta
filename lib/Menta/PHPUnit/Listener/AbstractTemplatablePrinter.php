@@ -42,11 +42,11 @@ abstract class Menta_PHPUnit_Listener_AbstractTemplatablePrinter extends PHPUnit
 	 *
 	 * 				<array>
 	 * 					<element key="js/handle.gif">
-	 * 						<string>.../Resources/Templates/img/handle.gif</string>
-	 *					<element>
+	 * 						<string>###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/files/handle.gif</string>
+	 *					</element>
 	 * 					<element key="js/jquery.beforeafter-1.4.min.js">
-	 * 						<string>###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/img/jquery.beforeafter-1.4.min.js</string>
-	 *					<element>
+	 * 						<string>###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/files/jquery.beforeafter-1.4.min.js</string>
+	 *					</element>
 	 *					<!-- ... -->
 	 * 				</array>
 	 * 			</arguments>

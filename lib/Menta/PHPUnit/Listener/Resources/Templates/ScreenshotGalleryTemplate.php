@@ -34,12 +34,14 @@
 		.progress-inner { border-style: solid; border-width: 1px 0 0 5px; display: block; height: 29px; padding: 3px; }
 		.toggle { text-decoration: none; color: black; background-color: rgba(255, 255, 255, 0.8); padding: 2px 5px; margin-left: 3px; }
 		.description { font-style: italic; background-color:rgba(255,255,255,0.8); padding: 3px; }
-        .screenshotwrapper { max-height: 200px; display: block; overflow: hidden; }
-        .screenshotwrapper:hover { max-height: none; }
         div.screenshot { float: left; margin-right: 10px; padding: 5px; background-color: #ccc; }
         div.variants { display: block; overflow: hidden; margin-top: 20px; }
         .variants-title { font-size: 16px; margin-bottom: 5px; }
+        .beforeafter { float:left; margin-right: 20px; }
 	</style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.beforeafter-1.4.min.js"></script>
 </head>
 <body>
 	<?php echo $this->printResult($this->get('results')) ?>

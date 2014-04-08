@@ -13,5 +13,12 @@ class Menta_PHPUnit_Listener_ScreenshotGalleryPrinter extends Menta_PHPUnit_List
 	protected $templateFile = '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/ScreenshotGalleryTemplate.php';
     protected $viewClass = 'Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView';
 
+    protected $additionalFiles = array(
+        'js/handle.gif' => '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/files/handle.gif',
+        'js/jquery.beforeafter-1.4.min.js' => '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/files/jquery.beforeafter-1.4.min.js',
+        'js/lt-small.png' => '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/files/lt-small.png',
+        'js/rt-small.png' => '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/files/rt-small.png'
+    );
+
 }
 

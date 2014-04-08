@@ -7,7 +7,7 @@
  */
 class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUnit_Listener_Resources_HtmlResultView {
 
-    CONST THUMBNAIL_WIDTH = 200;
+    CONST THUMBNAIL_WIDTH = 400;
 
 	/**
 	 * Print test
@@ -111,12 +111,6 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
             $simpleImage = new Menta_Util_SimpleImage($directory . DIRECTORY_SEPARATOR . $fileName);
             $simpleImage->resizeToWidth(self::THUMBNAIL_WIDTH)->save($directory . DIRECTORY_SEPARATOR . $thumbnailName, IMAGETYPE_PNG);
 
-            $result .= '<a class="current" title="'.$screenshot->getTitle().'" href="'.$fileName.'">';
-                $result .= '<img src="'.$thumbnailName.'" width="'.self::THUMBNAIL_WIDTH.'" />';
-            $result .= '</a>';
-
-
-
             $previousPath = $this->getPreviousPath();
             $previousScreenshot = $previousPath . DIRECTORY_SEPARATOR . $fileName;
 
@@ -139,9 +133,22 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
                     }
                     link($previousPath . DIRECTORY_SEPARATOR . $thumbnailName, $directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev);
 
-                    $result .= '<a class="previous" title="'.$screenshot->getTitle().'" href="'.$fileNamePrev.'">';
-                        $result .= '<img src="'.$thumbnailNamePrev.'" width="'.self::THUMBNAIL_WIDTH.'" />';
-                    $result .= '</a>';
+//                    $result .= '<a class="previous" title="'.$screenshot->getTitle().'" href="'.$fileNamePrev.'">';
+//                        $result .= '<img src="'.$thumbnailNamePrev.'" width="'.self::THUMBNAIL_WIDTH.'" />';
+//                    $result .= '</a>';
+
+
+                    // before after viewer
+                    $size = getimagesize($directory . DIRECTORY_SEPARATOR . $thumbnailName);
+                    $id = uniqid('beforeafter_');
+                    $result .= '<div class="beforeafter">';
+                        $result .= '<div id="'.$id.'">';
+                            $result .= '<div><img alt="after" src="'.$fileName.'" width="'.self::THUMBNAIL_WIDTH.'" height="'.$size[1].'" /></div>';
+                            $result .= '<div><img alt="before" src="'.$fileNamePrev.'" width="'.self::THUMBNAIL_WIDTH.'" height="'.$size[1].'" /></div>';
+                        $result .= '</div>';
+                        $result .= '<script type="text/javascript">$(function(){ $("#'.$id.'").beforeAfter(); }); </script>';
+                    $result .= '</div>';
+
 
                     $fileNameDiff = 'screenshot_' . $screenshot->getId() . '.diff.png';
                     $thumbnailNameDiff = 'screenshot_' . $screenshot->getId() . '_thumb.diff.png';
@@ -160,7 +167,13 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
                         $result .= '<img src="'.$thumbnailNameDiff.'" width="'.self::THUMBNAIL_WIDTH.'" />';
                     $result .= '</a>';
 
+
                 } else {
+
+                    $result .= '<a class="current" title="'.$screenshot->getTitle().'" href="'.$fileName.'">';
+                        $result .= '<img src="'.$thumbnailName.'" width="'.self::THUMBNAIL_WIDTH.' " />';
+                    $result .= '</a>';
+
                     $result .= 'PDIFF: Exact match.';
                 }
             } elseif ($previousPath && !is_file($previousScreenshot)) {
