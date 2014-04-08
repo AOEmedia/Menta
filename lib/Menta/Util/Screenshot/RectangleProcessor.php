@@ -36,8 +36,12 @@ class Menta_Util_Screenshot_RectangleProcessor extends Menta_Util_Screenshot_Abs
      * @param string $color
      * @param bool   $fill
      */
-    public function __construct($x1, $y1, $x2, $y2, $color = '#ffffff', $fill = true)
+    public function __construct($x1, $y1=NULL, $x2=NULL, $y2=NULL, $color = '#ffffff', $fill = true)
     {
+        if ($x1 instanceof \WebDriver\Element) {
+            list($x1, $y1, $x2, $y2) = array_values(Menta_Util_Div::getElementCoordinates($x1));
+        }
+
         $this->x1 = $x1;
         $this->y1 = $y1;
         $this->x2 = $x2;

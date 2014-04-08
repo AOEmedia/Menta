@@ -12,20 +12,16 @@ class Menta_Util_Screenshot_CropProcessor extends Menta_Util_Screenshot_Abstract
     protected $x2;
     protected $y2;
 
-    /**
-     * Filename for new screenshot (if you don't want to overwrite the original)
-     *
-     * @var string
-     */
-    protected $newFileName;
-
-    public function __construct($x1, $y1, $x2, $y2, $newFileName = '')
+    public function __construct($x1, $y1=null, $x2=null, $y2=null)
     {
+        if ($x1 instanceof \WebDriver\Element) {
+            list($x1, $y1, $x2, $y2) = array_values(Menta_Util_Div::getElementCoordinates($x1));
+        }
+
         $this->x1 = $x1;
         $this->y1 = $y1;
         $this->x2 = $x2;
         $this->y2 = $y2;
-        $this->newFileName = $newFileName;
     }
 
     public function process()
@@ -39,8 +35,7 @@ class Menta_Util_Screenshot_CropProcessor extends Menta_Util_Screenshot_Abstract
             intval($this->y2 - $this->y1),
             intval($this->x1),
             intval($this->y1),
-            escapeshellarg($this->imageFile),
-            escapeshellarg($this->newFileName ? $this->newFileName: $this->imageFile)
+            escapeshellarg($this->imageFile)
         );
 
         exec($command);
