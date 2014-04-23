@@ -99,10 +99,10 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 *
 	 * @throws Exception
 	 * @param string|\WebDriver\Element $element
-	 * @param $parent
+	 * @param \WebDriver\Container $parent
 	 * @return \WebDriver\Element
 	 */
-	public function getElement($element, $parent = NULL) {
+	public function getElement($element, \WebDriver\Container $parent = NULL) {
 		if ($element instanceof \WebDriver\Element) {
 			// already the correct element => do nothing
 		} else {
@@ -334,6 +334,16 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		$option->click();
 	}
 
+    /**
+     * @param string|array|\WebDriver\Element $element
+     */
+    public function selectAll($element) {
+        $allOptions = $this->getAllOptions($element);
+        foreach ($allOptions as $value => $label) {
+            $this->select($element, 'value='.$value);
+        }
+    }
+
 	/**
 	 * Get selected label
 	 *
@@ -382,6 +392,22 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		}
 		return FALSE;
 	}
+
+    /**
+     * Get get all options
+     *
+     * @param string|array|\WebDriver\Element $element
+     * @return array
+     */
+    public function getAllOptions($element) {
+        $element = $this->getElement($element);
+        $options = $element->elements(\WebDriver\LocatorStrategy::XPATH, './/option');
+        $data = array();
+        foreach ($options as $option) { /* @var $option \Webdriver\Element */
+            $data[$option->getAttribute('value')] = $option->text();
+        }
+        return $data;
+    }
 
 	/**
 	 * Add form data
