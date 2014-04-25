@@ -122,10 +122,10 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	 *
 	 * @throws Exception
 	 * @param $element
-	 * @param $parent
+	 * @param \WebDriver\Container $parent
 	 * @return array
 	 */
-	public function getElements($element, $parent = NULL) {
+	public function getElements($element, \WebDriver\Container $parent = NULL) {
 		if (is_null($parent)) {
 			$parent = $this->getSession();
 		}
@@ -407,6 +407,15 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
             $data[$option->getAttribute('value')] = $option->text();
         }
         return $data;
+    }
+
+    /**
+     * Select random option
+     *
+     * @param $element
+     */
+    public function selectRandomOption($element) {
+        $this->select($element, 'value='.array_rand($this->getAllOptions($element)));
     }
 
 	/**
