@@ -155,6 +155,37 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
 		$this->getTest()->assertContains($class, $actualClass, $message);
 	}
 
+    /**
+     * Checks if an element has a class
+     *
+     * @author David Robinson <david.robinson@aoe.com>
+     * @since 2014-05-08
+     * @param string|array|\WebDriver\Element $element
+     * @param string $class
+     * @param string $message
+     * @return void
+     */
+    public function assertElementHasClass($element, $class, $message='') {
+        $actualClass = $this->getHelperCommon()->getElement($element)->attribute('class');
+        $this->getTest()->assertContains($class, $actualClass, $message);
+    }
+
+    /**
+     * Checks if an element's CSS property has an expected value
+     *
+     * @author David Robinson <david.robinson@aoe.com>
+     * @since 2014-05-08
+     * @param string|array|\WebDriver\Element $element
+     * @param string $propertyName
+     * @param string $expectedValue
+     * @param string $message
+     * @return void
+     */
+    public function assertElementCssHasValue($element, $propertyName, $expectedValue, $message='') {
+        $actualValue = $this->getHelperCommon()->getElement($element)->css($propertyName);
+        $this->getTest()->assertEquals($expectedValue, $actualValue, $message);
+    }
+
 	/**
 	 * Checks if a input is checked (radio button, checkbox)
 	 *
