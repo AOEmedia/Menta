@@ -46,7 +46,6 @@ class Menta_Util_Div {
         );
     }
 
-
 	public static function containsText($text) {
 		return "contains(concat(' ', text() , ' '), ' $text ')";
 	}
