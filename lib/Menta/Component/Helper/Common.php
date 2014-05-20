@@ -275,6 +275,16 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 		return $this->doAction($element, 'text');
 	}
 
+    /**
+     * Get value
+     *
+     * @param string|array|\WebDriver\Element $element
+     * @return string
+     */
+    public function getValue($element) {
+        return $this->getElement($element)->getAttribute('value');
+    }
+
 	/**
 	 * Click on an element
 	 *
