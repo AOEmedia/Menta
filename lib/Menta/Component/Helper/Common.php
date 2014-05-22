@@ -474,12 +474,14 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 	}
 
 	/**
-	 * Retry action $this->getRetryActionLimit() times to avoid random stale reference exception issues
-	 *
+     * Retry action $this->getRetryActionLimit()
+     * times to avoid random stale reference exception issues
+     *
 	 * @param string $element
 	 * @param string $action
 	 * @param array $arguments
-	 * @throws WebDriver\Exception\StaleElementReference
+	 *
+*@throws WebDriver\Exception\StaleElementReference
 	 * @return mixed
 	 */
 	protected function doAction($element, $action, array $arguments = array()) {
@@ -499,4 +501,15 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 			}
 		}
 	}
+
+    /**
+     * Get value
+     *
+     * @param string|array|\WebDriver\Element $element
+     * @return string
+     */
+    public function getTextFromInnerHTML($element)
+    {
+        return strip_tags($this->getElement($element)->getAttribute('innerHTML'));
+    }
 }
