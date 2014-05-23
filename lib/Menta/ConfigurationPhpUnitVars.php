@@ -50,19 +50,26 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
 	 * @return string
 	 */
 	public function getValue($key) {
-		if (empty($GLOBALS[__CLASS__.'_defaultsLoaded'])) {
-			$this->loadDefaults();
-		}
-		if (!$this->issetKey($key)) {
-			throw new Exception(sprintf('Could not find configuration key "%s"', $key));
-		}
+        if (empty($GLOBALS[__CLASS__.'_defaultsLoaded'])) {
+            $this->loadDefaults();
+        }
+        if (!$this->issetKey($key)) {
+            throw new Exception(sprintf('Could not find configuration key "%s"', $key));
+        }
 
-		// json decoding if possible
-		$jsonDecoded = json_decode($GLOBALS[$key], true);
-		if (!is_null($jsonDecoded)) {
-			$GLOBALS[$key] = $jsonDecoded;
-		}
-		return $GLOBALS[$key];
+        if(is_string($GLOBALS[$key])) {
+            if(strpos($GLOBALS[$key], '[') !== false || strpos($GLOBALS[$key], '{') !== false) {
+                // json decoding if possible
+
+                    $jsonDecoded = json_decode($GLOBALS[$key], true);
+                    if (!is_null($jsonDecoded)) {
+                        $GLOBALS[$key] = $jsonDecoded;
+                    }
+
+            }
+        }
+
+        return $GLOBALS[$key];
 	}
 
 	/**
