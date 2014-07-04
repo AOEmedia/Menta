@@ -57,20 +57,21 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
             throw new Exception(sprintf('Could not find configuration key "%s"', $key));
         }
 
-        if(is_string($GLOBALS[$key])) {
-            if(strpos($GLOBALS[$key], '[') !== false || strpos($GLOBALS[$key], '{') !== false) {
+        $value = $GLOBALS[$key];
+        $value = $this->replaceWithEnvironmentVariables($value);
+
+        if (is_string($value)) {
+            if (strpos($value, '[') !== false || strpos($value, '{') !== false) {
                 // json decoding if possible
 
-                    $jsonDecoded = json_decode($GLOBALS[$key], true);
+                    $jsonDecoded = json_decode($value, true);
                     if (!is_null($jsonDecoded)) {
-                        $GLOBALS[$key] = $jsonDecoded;
+                        $value = $jsonDecoded;
                     }
 
             }
         }
 
-        $value = $GLOBALS[$key];
-        $value = $this->replaceWithEnvironmentVariables($value);
         return $value;
 	}
 
@@ -82,15 +83,15 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
      */
     protected function replaceWithEnvironmentVariables($string) {
         $matches = array();
-        preg_match_all('/###ENV:([^#]*)###/', $string, $matches, PREG_PATTERN_ORDER);
-        if (!is_array($matches) || !is_array($matches[0])) {
-            return $string;
-        }
-        foreach ($matches[0] as $index => $completeMatch) {
-            if (getenv($matches[1][$index]) === false) {
-                throw new \Exception('Expected an environment variable ' . $matches[1][$index] . ' is not set');
+        while (preg_match('/###ENV:([^#]*)###/', $string, $matches)) {
+            if (!is_array($matches)) {
+                return $string;
             }
-            $string = str_replace($completeMatch, getenv($matches[1][$index]), $string);
+            if (getenv($matches[1]) === false) {
+                throw new \Exception('Expected an environment variable ' . $matches[1] . ' is not set');
+            }
+            $string = str_replace($matches[0], getenv($matches[1]), $string);
+            $matches = array();
         }
 
         return $string;
