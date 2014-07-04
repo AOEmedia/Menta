@@ -69,8 +69,32 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
             }
         }
 
-        return $GLOBALS[$key];
+        $value = $GLOBALS[$key];
+        $value = $this->replaceWithEnvironmentVariables($value);
+        return $value;
 	}
+
+    /**
+     * Replaces this pattern ###ENV:TEST### with the environment variable
+     * @param $string
+     * @return string
+     * @throws \Exception
+     */
+    protected function replaceWithEnvironmentVariables($string) {
+        $matches = array();
+        preg_match_all('/###ENV:([^#]*)###/', $string, $matches, PREG_PATTERN_ORDER);
+        if (!is_array($matches) || !is_array($matches[0])) {
+            return $string;
+        }
+        foreach ($matches[0] as $index => $completeMatch) {
+            if (getenv($matches[1][$index]) === false) {
+                throw new \Exception('Expected an environment variable ' . $matches[1][$index] . ' is not set');
+            }
+            $string = str_replace($completeMatch, getenv($matches[1][$index]), $string);
+        }
+
+        return $string;
+    }
 
 	/**
 	 * Check if key is set
