@@ -58,7 +58,7 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
         }
 
         $value = $GLOBALS[$key];
-        $value = $this->replaceWithEnvironmentVariables($value);
+        $value = Menta_Util_Div::replaceWithEnvironmentVariables($value);
 
         if (is_string($value)) {
             if (strpos($value, '[') !== false || strpos($value, '{') !== false) {
@@ -74,28 +74,6 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
 
         return $value;
 	}
-
-    /**
-     * Replaces this pattern ###ENV:TEST### with the environment variable
-     * @param $string
-     * @return string
-     * @throws \Exception
-     */
-    protected function replaceWithEnvironmentVariables($string) {
-        $matches = array();
-        while (preg_match('/###ENV:([^#]*)###/', $string, $matches)) {
-            if (!is_array($matches)) {
-                return $string;
-            }
-            if (getenv($matches[1]) === false) {
-                throw new \Exception('Expected an environment variable ' . $matches[1] . ' is not set');
-            }
-            $string = str_replace($matches[0], getenv($matches[1]), $string);
-            $matches = array();
-        }
-
-        return $string;
-    }
 
 	/**
 	 * Check if key is set

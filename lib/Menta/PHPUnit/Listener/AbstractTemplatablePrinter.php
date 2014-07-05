@@ -63,6 +63,7 @@ abstract class Menta_PHPUnit_Listener_AbstractTemplatablePrinter extends PHPUnit
 	public function __construct($targetFile=NULL, $templateFile=NULL, array $additionalFiles=NULL) {
 		if (!is_null($targetFile)) {
 			$this->targetFile = $targetFile;
+            $this->targetFile = Menta_Util_Div::replaceWithEnvironmentVariables($this->targetFile);
 		}
 		$dir = dirname($this->targetFile);
 		if (!is_dir($dir)) {

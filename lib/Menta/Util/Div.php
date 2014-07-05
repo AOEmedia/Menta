@@ -49,4 +49,26 @@ class Menta_Util_Div {
 	public static function containsText($text) {
 		return "contains(concat(' ', text() , ' '), ' $text ')";
 	}
+
+    /**
+     * Replaces this pattern ###ENV:TEST### with the environment variable
+     * @param $string
+     * @return string
+     * @throws \Exception
+     */
+    public static function replaceWithEnvironmentVariables($string) {
+        $matches = array();
+        while (preg_match('/###ENV:([^#]*)###/', $string, $matches)) {
+            if (!is_array($matches)) {
+                return $string;
+            }
+            if (getenv($matches[1]) === false) {
+                throw new \Exception('Expected an environment variable ' . $matches[1] . ' is not set');
+            }
+            $string = str_replace($matches[0], getenv($matches[1]), $string);
+            $matches = array();
+        }
+
+        return $string;
+    }
 }
