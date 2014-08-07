@@ -71,7 +71,9 @@ abstract class Menta_PHPUnit_Listener_AbstractTemplatablePrinter extends PHPUnit
 		}
 		// clean target dir
 		foreach (glob($dir."/*") as $file) {
-			unlink($file);
+            if (!is_dir($file)) {
+                unlink($file);
+            }
 		}
 		if (!is_null($templateFile)) {
 			$this->templateFile = $templateFile;

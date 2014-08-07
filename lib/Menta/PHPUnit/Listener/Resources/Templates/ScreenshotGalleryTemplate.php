@@ -40,7 +40,7 @@
         .beforeafter { float:left; margin-right: 20px; }
 	</style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.beforeafter-1.4.min.js"></script>
 </head>
 <body>

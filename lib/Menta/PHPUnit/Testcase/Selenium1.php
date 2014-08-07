@@ -8,7 +8,7 @@
 
 /**
  * Update this index using:
- * cat Menta/Component/Selenium1Facade.php | grep 'public function' | sed 's/^.*public function / * @method /' | sed 's/\w*{.*\?//'
+ * cat Menta/Component/Selenium1Facade.php | grep 'public function' | sed 's/^.*public function / * @method /' | sed 's/\s*{.*$//'
  *
  * @method assertTitle($title)
  * @method isElementPresent($element)
@@ -33,6 +33,7 @@
  * @method getEval($jsSnippet)
  * @method click($element)
  * @method type($element, $text)
+ * @method typeAndLeave($element, $text)
  * @method select($element, $option)
  * @method fireEvent($element, $event)
  * @method getValue($element)
@@ -50,8 +51,9 @@
  * @method waitForAjaxCompletedJquery()
  * @method waitForAjaxCompletedPrototype()
  * @method clickAndWaitAjax($clickElement, $waitForElementAfterClick, $timeout=NULL)
- * @method typeAndLeave($element, $text)
  * @method assertElementContainsText($element, $text, $message='')
+ * @method getLocation()
+ * @method isEditable($element)
  */
 abstract class Menta_PHPUnit_Testcase_Selenium1 extends Menta_PHPUnit_Testcase_Selenium2 {
 
