@@ -151,7 +151,7 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
 	 * @return void
 	 */
 	public function assertBodyClass($class, $message='') {
-		$actualClass = $this->getHelperCommon()->getElement('//body')->attribute('class');
+		$actualClass = $this->getHelperCommon()->getElement('tag=body')->attribute('class');
 		$this->getTest()->assertContains($class, $actualClass, $message);
 	}
 

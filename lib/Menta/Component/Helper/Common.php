@@ -84,6 +84,8 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
 			$locator = array('using' => \WebDriver\LocatorStrategy::CSS_SELECTOR, 'value' => substr($locator, 4));
 		} elseif (substr($locator, 0, 5) == 'link=') {
 			$locator = array('using' => \WebDriver\LocatorStrategy::LINK_TEXT, 'value' => substr($locator, 5));
+        } elseif (substr($locator, 0, 4) == 'tag=') {
+            $locator = array('using' => \WebDriver\LocatorStrategy::TAG_NAME, 'value' => substr($locator, 4));
 		} elseif (is_string($locator)) {
 			$locator = array('using' => \WebDriver\LocatorStrategy::ID, 'value' => $locator);
 		} else {
