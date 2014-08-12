@@ -29,13 +29,6 @@ class Menta_Util_Screenshot {
     protected $processingInstructions = array();
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->setId(md5(uniqid(rand(), TRUE)));
-	}
-
-	/**
 	 * Set id
 	 *
 	 * @param string
@@ -53,11 +46,16 @@ class Menta_Util_Screenshot {
 	 */
 	public function getId() {
         if (is_null($this->id)) {
-            $id = $this->getTitle();
-            if (!is_null($this->variant)) {
-                $id .= '.' . $this->variant;
+            // auto-generate id from title or from random string:
+            if ($this->getTitle()) {
+                $id = $this->getTitle();
+                if (!is_null($this->variant)) {
+                    $id .= '.' . $this->variant;
+                }
+            } else {
+                $id = md5(uniqid(rand(), TRUE));
             }
-            return $id;
+            $this->setId($id);
         }
 		return $this->id;
 	}
