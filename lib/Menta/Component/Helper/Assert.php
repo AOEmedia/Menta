@@ -141,18 +141,24 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
 		$this->getTest()->assertEquals($text, $actualText, $message);
 	}
 
-	/**
-	 * Checks if body tag contains class
-	 *
-	 * @author Fabrizio Branca
-	 * @since 2012-11-16
-	 * @param string $class
-	 * @param string $message
-	 * @return void
-	 */
+    /**
+     * Checks if body tag contains class
+     *
+     * @author Fabrizio Branca
+     * @since 2012-11-16
+     * @param string $class
+     * @param string $message
+     * @throws Exception
+     * @return void
+     */
 	public function assertBodyClass($class, $message='') {
-		$actualClass = $this->getHelperCommon()->getElement('tag=body')->attribute('class');
-		$this->getTest()->assertContains($class, $actualClass, $message);
+        $parent = $this;
+        if (!$this->getHelperWait()->wait(function() use ($class, $message, $parent) {
+            $actualClass = $parent->getHelperCommon()->getElement('tag=body')->attribute('class');
+            return strpos($actualClass, $class) !== false;
+        })) {
+            throw new Exception('Waiting for body class '.$class. ' timed out.');
+        }
 	}
 
     /**
