@@ -57,59 +57,59 @@
  */
 abstract class Menta_PHPUnit_Testcase_Selenium1 extends Menta_PHPUnit_Testcase_Selenium2 {
 
-	protected $captureScreenshotOnFailure = false;
+    protected $captureScreenshotOnFailure = false;
 
-	/**
-	 * @var Menta_Component_Selenium1Facade
-	 */
-	protected $selenium1Facade;
+    /**
+     * @var Menta_Component_Selenium1Facade
+     */
+    protected $selenium1Facade;
 
-	/**
-	 * @return Menta_ConfigurationPhpUnitVars
-	 */
-	public function getConfiguration() {
-		return Menta_ConfigurationPhpUnitVars::getInstance();
-	}
+    /**
+     * @return Menta_ConfigurationPhpUnitVars
+     */
+    public function getConfiguration() {
+        return Menta_ConfigurationPhpUnitVars::getInstance();
+    }
 
-	/**
-	 * Set browser url
-	 *
-	 * @param $baseUrl
-	 * @return void
-	 */
-	public function setBrowserUrl($baseUrl) {
-		$this->getSelenium1Facade()->setBrowserUrl($baseUrl);
-	}
+    /**
+     * Set browser url
+     *
+     * @param $baseUrl
+     * @return void
+     */
+    public function setBrowserUrl($baseUrl) {
+        $this->getSelenium1Facade()->setBrowserUrl($baseUrl);
+    }
 
-	/**
-	 * Get selenium1 api
-	 *
-	 * @return Menta_Component_Selenium1Facade
-	 */
-	public function getSelenium1Facade() {
-		if (is_null($this->selenium1Facade)) {
-			$this->selenium1Facade = Menta_ComponentManager::get('Menta_Component_Selenium1Facade');
-			$this->selenium1Facade->setTest($this);
-		}
-		return $this->selenium1Facade;
-	}
+    /**
+     * Get selenium1 api
+     *
+     * @return Menta_Component_Selenium1Facade
+     */
+    public function getSelenium1Facade() {
+        if (is_null($this->selenium1Facade)) {
+            $this->selenium1Facade = Menta_ComponentManager::get('Menta_Component_Selenium1Facade');
+            $this->selenium1Facade->setTest($this);
+        }
+        return $this->selenium1Facade;
+    }
 
-	/**
-	 * Delegate method calls to the selenium 1 api.
-	 *
-	 * @param  string $command
-	 * @param  array  $arguments
-	 * @throws Exception if command is not implemented in api wrapper class
-	 * @return mixed
-	 */
-	public function __call($command, $arguments) {
-		// file_put_contents('debug.txt', var_export($command, 1) ."\n", FILE_APPEND);
-		if (!method_exists($this->getSelenium1Facade(), $command)) {
-			throw new Exception("Command $command is not implemented in the selenium1 api wrapper class");
-		}
+    /**
+     * Delegate method calls to the selenium 1 api.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @throws Exception if command is not implemented in api wrapper class
+     * @return mixed
+     */
+    public function __call($command, $arguments) {
+        // file_put_contents('debug.txt', var_export($command, 1) ."\n", FILE_APPEND);
+        if (!method_exists($this->getSelenium1Facade(), $command)) {
+            throw new Exception("Command $command is not implemented in the selenium1 api wrapper class");
+        }
 
-		$result = call_user_func_array(array($this->getSelenium1Facade(), $command), $arguments);
-		return $result;
-	}
+        $result = call_user_func_array(array($this->getSelenium1Facade(), $command), $arguments);
+        return $result;
+    }
 
 }

@@ -7,23 +7,23 @@
  */
 interface Menta_Interface_ScreenshotTestcase {
 
-	/**
-	 * Take a screenshot
-	 *
-	 * @abstract
-	 * @param string $title
-	 * @param string $description
-	 * @param string $type
-	 * @param array $trace
-	 * @return return Menta_Util_Screenshot
-	 */
-	function takeScreenshot($title=NULL, $description=NULL, $type=NULL, array $trace=NULL);
+    /**
+     * Take a screenshot
+     *
+     * @abstract
+     * @param string $title
+     * @param string $description
+     * @param string $type
+     * @param array $trace
+     * @return return Menta_Util_Screenshot
+     */
+    function takeScreenshot($title=NULL, $description=NULL, $type=NULL, array $trace=NULL);
 
-	/**
-	 * Get all screenshots that were taken so far
-	 *
-	 * @return array array of Menta_Util_Screenshot
-	 */
-	function getScreenshots();
+    /**
+     * Get all screenshots that were taken so far
+     *
+     * @return array array of Menta_Util_Screenshot
+     */
+    function getScreenshots();
 
 }

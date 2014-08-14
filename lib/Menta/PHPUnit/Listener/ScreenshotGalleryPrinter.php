@@ -7,10 +7,10 @@
  */
 class Menta_PHPUnit_Listener_ScreenshotGalleryPrinter extends Menta_PHPUnit_Listener_HtmlResultPrinter {
 
-	/**
-	 * @var string
-	 */
-	protected $templateFile = '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/ScreenshotGalleryTemplate.php';
+    /**
+     * @var string
+     */
+    protected $templateFile = '###MENTA_ROOTDIR###/PHPUnit/Listener/Resources/Templates/ScreenshotGalleryTemplate.php';
     protected $viewClass = 'Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView';
 
     protected $additionalFiles = array(
