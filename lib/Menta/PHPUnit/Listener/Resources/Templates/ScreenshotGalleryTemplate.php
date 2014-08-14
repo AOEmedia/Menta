@@ -39,8 +39,11 @@
         .variants-title { font-size: 16px; margin-bottom: 5px; }
         .beforeafter { float:left; margin-right: 20px; }
     </style>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+        document.write(decodeURI("%3Cscript src='http" + (("https:" == document.location.protocol) ? "s" : "") + "://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
+        document.write(decodeURI("%3Cscript src='http" + (("https:" == document.location.protocol) ? "s" : "") + "://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
     <script type="text/javascript" src="js/jquery.beforeafter-1.4.min.js"></script>
 </head>
 <body>

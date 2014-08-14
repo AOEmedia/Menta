@@ -35,7 +35,9 @@
         .toggle { text-decoration: none; color: black; background-color: rgba(255, 255, 255, 0.8); padding: 2px 5px; margin-left: 3px; }
         .description { font-style: italic; background-color:rgba(255,255,255,0.8); padding: 3px; }
     </style>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.write(decodeURI("%3Cscript src='http" + (("https:" == document.location.protocol) ? "s" : "") + "://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
     <script type="text/javascript">
         $(function() {
 
