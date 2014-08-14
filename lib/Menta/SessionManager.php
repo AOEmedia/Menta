@@ -106,7 +106,8 @@ class Menta_SessionManager {
 			}
 		}
 		// the session id is the last part of the url
-		$sessionId = array_pop(explode('/', $session->getUrl()));
+        $parts = explode('/', $session->getUrl());
+		$sessionId = array_pop($parts);
 		return $sessionId;
 	}
 
