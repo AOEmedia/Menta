@@ -33,6 +33,18 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
         if (!preg_match('/^https?:/i', $url)) {
             $url = rtrim($this->getMainDomain(), '/') . '/' . ltrim($url, '/');
         }
+        $pos = strpos($url, '#');
+        if ($pos !== false) {
+            $targetUrl = substr($url, 0, $pos);
+            $currentUrl = $this->getSession()->url();
+            $currentPos = strpos($currentUrl, '#');
+            if ($currentPos !== false) {
+                $currentUrl = substr($currentUrl, 0, $currentPos);
+            }
+            if ($targetUrl != $currentUrl) {
+                $this->getSession()->open($targetUrl);
+            }
+        }
         return $this->getSession()->open($url);
     }
 
@@ -515,3 +527,4 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
         return strip_tags($this->getElement($element)->getAttribute('innerHTML'));
     }
 }
+
