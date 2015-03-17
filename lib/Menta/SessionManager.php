@@ -112,6 +112,24 @@ class Menta_SessionManager {
     }
 
     /**
+     * Get browser
+     *
+     * @return string
+     */
+    public static function getBrowser() {
+        return self::$browser;
+    }
+
+    /**
+     * Get additional capabilities
+     *
+     * @return array
+     */
+    public static function getAdditionalCapabilities() {
+        return self::$additionalCapabilities;
+    }
+
+    /**
      * Check if an active session exists
      *
      * @static
