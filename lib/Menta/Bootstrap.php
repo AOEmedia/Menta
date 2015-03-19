@@ -49,9 +49,13 @@ class Menta_Bootstrap {
      * @return void
      */
     public static function closeSeleniumSession() {
-        if (Menta_SessionManager::activeSessionExists()) {
-            echo "\n[Closing remote selenium session]\n";
-            Menta_SessionManager::closeSession();
+        try {
+            if (Menta_SessionManager::activeSessionExists()) {
+                echo "\n[Closing remote selenium session]\n";
+                Menta_SessionManager::closeSession();
+            }
+        } catch (Exception $e) {
+            echo "[closeSeleniumSession] EXCEPTION: " . $e->getMessage();
         }
         exit;
     }
