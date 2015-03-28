@@ -102,6 +102,10 @@ class Menta_PHPUnit_Listener_HtmlResultPrinter extends Menta_PHPUnit_Listener_Ab
             }
         }
 
+        if ($test instanceof Menta_Interface_TestLogTestcase) { /* @var $test Menta_Interface_TestLogTestcase */
+            $result['loggedTestSteps'] = $test->getLoggedTestSteps();
+        }
+
         if (method_exists($test, 'getInfo')) {
             $result['info'] = $test->getInfo();
         }

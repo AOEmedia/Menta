@@ -12,7 +12,7 @@
  * @author Fabrizio Branca
  * @since 2011-11-18
  */
-abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCase implements Menta_Interface_ScreenshotTestcase {
+abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCase implements Menta_Interface_ScreenshotTestcase, Menta_Interface_TestLogTestcase {
 
     /**
      * @var string
@@ -48,6 +48,11 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
      * @var Menta_Interface_Configuration
      */
     protected $configuration;
+
+	/**
+	 * @var array
+	 */
+	protected $loggedTestSteps = array();
 
     /**
      * @param  string $name
@@ -180,30 +185,41 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
      * @return bool|Menta_Util_Screenshot
      */
     public function takeScreenshot($title=NULL, $description=NULL, $type=NULL, array $trace=NULL, $id=NULL, $variant=NULL) {
-
         // don't init a new session if there is none
         if (!Menta_SessionManager::activeSessionExists()) {
             return false;
         }
-
-        $time = time();
-
-        $screenshotHelper = Menta_ComponentManager::get('Menta_Component_Helper_Screenshot'); /* @var $screenshotHelper Menta_Component_Helper_Screenshot */
-        $base64Image = $screenshotHelper->takeScreenshotToString();
-
-        // put data into the screenshot object
-        $screenshot = new Menta_Util_Screenshot();
-        $screenshot->setBase64Image($base64Image);
-        $screenshot->setTime($time);
+        $screenshot = $this->getScreenShot();
+        $screenshot->setTrace(!is_null($trace) ? $trace : debug_backtrace());
         if (!is_null($id)) { $screenshot->setId($id); }
-        if (!is_null($title)) { $screenshot->setTitle($title); }
         if (!is_null($description)) { $screenshot->setDescription($description); }
         if (!is_null($type)) { $screenshot->setType($type); }
         if (!is_null($variant)) { $screenshot->setVariant($variant); }
-        $screenshot->setTrace(!is_null($trace) ? $trace : debug_backtrace());
-        $screenshot->setLocation($this->getSession()->url());
-
         $this->screenshots[] = $screenshot;
+        return $screenshot;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return Menta_Util_Screenshot
+     */
+    public function getScreenShot($title = '') {
+        // don't init a new session if there is none
+        if (!Menta_SessionManager::activeSessionExists()) {
+            return false;
+        }
+        $screenshotHelper = Menta_ComponentManager::get('Menta_Component_Helper_Screenshot'); /* @var $screenshotHelper Menta_Component_Helper_Screenshot */
+        $base64Image = $screenshotHelper->takeScreenshotToString();
+        $time = time();
+            // put data into the screenshot object
+        $screenshot = new Menta_Util_Screenshot();
+        $screenshot->setBase64Image($base64Image);
+        $screenshot->setTime($time);
+
+        if (!is_null($title)) { $screenshot->setTitle($title); }
+
+        $screenshot->setLocation($this->getSession()->url());
         return $screenshot;
     }
 
@@ -225,5 +241,27 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
         return $this->testId;
     }
 
+	/**
+	 * @param $message
+	 */
+	function logTestStep($message)
+	{
+		$this->loggedTestSteps[] = $message;
+	}
 
+	/**
+	 * @param Menta_Util_Screenshot $screenshot
+	 */
+	function logScreenshot(Menta_Util_Screenshot $screenshot)
+	{
+		$this->loggedTestSteps[] = $screenshot;
+	}
+
+	/**
+	 * @return array
+	 */
+	function getLoggedTestSteps()
+	{
+		return $this->loggedTestSteps;
+	}
 }
