@@ -49,10 +49,10 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
      */
     protected $configuration;
 
-	/**
-	 * @var array
-	 */
-	protected $loggedTestSteps = array();
+    /**
+     * @var array
+     */
+    protected $loggedTestSteps = array();
 
     /**
      * @param  string $name
