@@ -23,7 +23,7 @@
         .duration { position: absolute; top: 2px; right: 2px; font-size: 9px; }
         pre { margin: 0; padding: 0; overflow: auto; }
         ul { padding: 0; margin: 0; }
-        li { list-style: none; padding: 0 5px; margin: 0 0 0 5px; }
+        ul li { list-style: none; padding: 0 5px; margin: 0 0 0 5px; }
         .legend li { border-top: 1px solid; border-left: 5px solid; float: left; }
         li.label { border: none; font-weight: bold; }
         li.screenshot { margin-bottom: 5px; margin-top: 5px; }
@@ -33,7 +33,7 @@
         .progress-value { height: 30px; display: block; float: left; }
         .progress-inner { border-style: solid; border-width: 1px 0 0 5px; display: block; height: 29px; padding: 3px; }
         .toggle { text-decoration: none; color: black; background-color: rgba(255, 255, 255, 0.8); padding: 2px 5px; margin-left: 3px; }
-        .description { font-style: italic; background-color:rgba(255,255,255,0.8); padding: 3px; }
+        .description, .teststeps { font-style: italic; background-color:rgba(255,255,255,0.8); padding: 3px; }
     </style>
     <script type="text/javascript">
         document.write(decodeURI("%3Cscript src='http" + (("https:" == document.location.protocol) ? "s" : "") + "://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
@@ -115,9 +115,13 @@
                 if ($this.find('.description').length) {
                     $header.append('<a title="Toggle description" href="#" class="toggle toggle-description">D</a>');
                 }
+                if ($this.find('.teststeps').length) {
+                    $header.append('<a title="Toggle teststeps" href="#" class="toggle toggle-teststeps">L</a>');
+                }
             });
             $('.exception, .screenshots').hide();
             $('.exception, .description').hide();
+            $('.exception, .teststeps').hide();
 
             $('.test .toggle-exception').click(function() {
                 $(this).parents('.test').find('.exception').toggle();
@@ -131,6 +135,10 @@
                 $(this).parents('.test').find('.description').toggle();
                 return false;
             });
+            $('.test .toggle-teststeps').click(function() {
+                $(this).parents('.test').find('.teststeps').toggle();
+                return false;
+            });
 
             $('#show-all-screenshots').click(function() { $('.screenshots').show(); })
             $('#hide-all-screenshots').click(function() { $('.screenshots').hide(); })
@@ -138,7 +146,8 @@
             $('#hide-all-exceptions').click(function() { $('.exception').hide(); })
             $('#show-all-descriptions').click(function() { $('.description').show(); })
             $('#hide-all-descriptions').click(function() { $('.description').hide(); })
-
+            $('#show-all-teststeps').click(function() { $('.teststeps').show(); })
+            $('#hide-all-teststeps').click(function() { $('.teststeps').hide(); })
 
             updateVisibility();
             $('.filter input').click(updateVisibility);
@@ -186,6 +195,9 @@
 
             <li class="label">Descriptions:</li>
             <li><a href="#" id="show-all-descriptions">Show</a> | <a href="#" id="hide-all-descriptions">Hide</a></li>
+
+            <li class="label">Test Steps:</li>
+            <li><a href="#" id="show-all-teststeps">Show</a> | <a href="#" id="hide-all-teststeps">Hide</a></li>
         </ul>
     </div>
 
