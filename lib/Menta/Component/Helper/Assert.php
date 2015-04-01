@@ -177,6 +177,21 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
     }
 
     /**
+     * Checks if an element does not have a class
+     *
+     * @author David Robinson <david.robinson@aoe.com>
+     * @since 2015-04-01
+     * @param string|array|\WebDriver\Element $element
+     * @param string $class
+     * @param string $message
+     * @return void
+     */
+    public function assertElementNotHasClass($element, $class, $message='') {
+        $actualClass = $this->getHelperCommon()->getElement($element)->attribute('class');
+        $this->getTest()->assertNotContains($class, $actualClass, $message);
+    }
+    
+    /**
      * Checks if an element's CSS property has an expected value
      *
      * @author David Robinson <david.robinson@aoe.com>
