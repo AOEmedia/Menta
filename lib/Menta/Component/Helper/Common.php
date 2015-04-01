@@ -34,6 +34,18 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
             $url = rtrim($this->getMainDomain(), '/') . '/' . ltrim($url, '/');
         }
         Menta_Events::dispatchEvent('open', array('url' => $url));
+        $pos = strpos($url, '#');
+        if ($pos !== false) {
+            $targetUrl = substr($url, 0, $pos);
+            $currentUrl = $this->getSession()->url();
+            $currentPos = strpos($currentUrl, '#');
+            if ($currentPos !== false) {
+                $currentUrl = substr($currentUrl, 0, $currentPos);
+            }
+            if ($targetUrl != $currentUrl) {
+                $this->getSession()->open($targetUrl);
+            }
+        }
         return $this->getSession()->open($url);
     }
 
@@ -98,6 +110,22 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
     }
 
     /**
+     * Get elements
+     *
+     * @throws Exception
+     * @param $element
+     * @param \WebDriver\Container $parent
+     * @return array
+     */
+    public function getElements($element, \WebDriver\Container $parent = NULL) {
+        if (is_null($parent)) {
+            $parent = $this->getSession();
+        }
+        $elements = $parent->elements($this->parseLocator($element));
+        return $elements;
+    }
+
+    /**
      * Auto-detect element
      *
      * @throws Exception
@@ -118,22 +146,6 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
             throw new Exception("Element '$element' not found");
         }
         return $element;
-    }
-
-    /**
-     * Get elements
-     *
-     * @throws Exception
-     * @param $element
-     * @param \WebDriver\Container $parent
-     * @return array
-     */
-    public function getElements($element, \WebDriver\Container $parent = NULL) {
-        if (is_null($parent)) {
-            $parent = $this->getSession();
-        }
-        $elements = $parent->elements($this->parseLocator($element));
-        return $elements;
     }
 
     /**
@@ -516,3 +528,4 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
         return strip_tags($this->getElement($element)->getAttribute('innerHTML'));
     }
 }
+
