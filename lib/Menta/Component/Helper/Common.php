@@ -33,6 +33,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
         if (!preg_match('/^https?:/i', $url)) {
             $url = rtrim($this->getMainDomain(), '/') . '/' . ltrim($url, '/');
         }
+        Menta_Events::dispatchEvent('open', array('url' => $url));
         return $this->getSession()->open($url);
     }
 
