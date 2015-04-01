@@ -26,11 +26,11 @@ class Menta_PHPUnit_Listener_Resources_HtmlResultView extends Menta_Util_View {
                 if (!empty($test['description'])) {
                     $result .= '<p>'. nl2br($test['description']) . '</p>';
                 }
-                if (isset($test['loggedTestSteps'])) {
-                    $result .= $this->renderTestSteps($test['loggedTestSteps']);
-                }
             $result .= '</div><!-- description -->';
 
+            if (isset($test['loggedTestSteps'])) {
+                $result .= $this->renderTestSteps($test['loggedTestSteps']);
+            }
 
             if (is_array($test['info'])) {
                 $result .= '<ul class="info">';
