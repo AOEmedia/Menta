@@ -116,7 +116,7 @@
                     $header.append('<a title="Toggle description" href="#" class="toggle toggle-description">D</a>');
                 }
                 if ($this.find('.teststeps').length) {
-                    $header.append('<a title="Toggle teststeps" href="#" class="toggle toggle-teststeps">L</a>');
+                    $header.append('<a title="Toggle teststeps" href="#" class="toggle toggle-teststeps">T</a>');
                 }
             });
             $('.exception, .screenshots').hide();

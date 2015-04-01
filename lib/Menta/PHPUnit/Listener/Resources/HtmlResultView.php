@@ -313,9 +313,7 @@ class Menta_PHPUnit_Listener_Resources_HtmlResultView extends Menta_Util_View {
     }
 
     /**
-     * @param array $test
-     * @param $result
-     *
+     * @param array $testSteps
      * @return string
      */
     protected function renderTestSteps(array $testSteps)
