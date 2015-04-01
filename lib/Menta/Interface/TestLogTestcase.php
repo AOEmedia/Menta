@@ -5,10 +5,10 @@
  */
 interface Menta_Interface_TestLogTestcase {
 
-    function logTestStep($message);
+    public function logTestStep($message);
 
-	function logScreenshot(Menta_Util_Screenshot $screenShot);
+    public function logScreenshot(Menta_Util_Screenshot $screenShot);
 
-	function getLoggedTestSteps();
+    public function getLoggedTestSteps();
 
 }

@@ -241,27 +241,24 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
         return $this->testId;
     }
 
-	/**
-	 * @param $message
-	 */
-	function logTestStep($message)
-	{
-		$this->loggedTestSteps[] = $message;
-	}
+    /**
+     * @param $message
+     */
+    public function logTestStep($message) {
+        $this->loggedTestSteps[] = $message;
+    }
 
-	/**
-	 * @param Menta_Util_Screenshot $screenshot
-	 */
-	function logScreenshot(Menta_Util_Screenshot $screenshot)
-	{
-		$this->loggedTestSteps[] = $screenshot;
-	}
+    /**
+     * @param Menta_Util_Screenshot $screenshot
+     */
+    public function logScreenshot(Menta_Util_Screenshot $screenshot) {
+        $this->loggedTestSteps[] = $screenshot;
+    }
 
-	/**
-	 * @return array
-	 */
-	function getLoggedTestSteps()
-	{
-		return $this->loggedTestSteps;
-	}
+    /**
+     * @return array
+     */
+    public function getLoggedTestSteps() {
+        return $this->loggedTestSteps;
+    }
 }
