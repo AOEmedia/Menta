@@ -34,18 +34,24 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
             $url = rtrim($this->getMainDomain(), '/') . '/' . ltrim($url, '/');
         }
         Menta_Events::dispatchEvent('open', array('url' => $url));
+
+        // check for hashes
         $pos = strpos($url, '#');
         if ($pos !== false) {
-            $targetUrl = substr($url, 0, $pos);
+            // if we're on a different page we need to go to the new page first (Selenium doesn't seem to do this automatically)
             $currentUrl = $this->getSession()->url();
-            $currentPos = strpos($currentUrl, '#');
-            if ($currentPos !== false) {
-                $currentUrl = substr($currentUrl, 0, $currentPos);
-            }
-            if ($targetUrl != $currentUrl) {
-                $this->getSession()->open($targetUrl);
+            if (preg_match('/^https?:/i', $currentUrl)) { // url could be "about:blank" if no page was loaded before
+                $targetUrl = substr($url, 0, $pos);
+                $currentPos = strpos($currentUrl, '#');
+                if ($currentPos !== false) {
+                    $currentUrl = substr($currentUrl, 0, $currentPos);
+                }
+                if ($targetUrl != $currentUrl) {
+                    $this->getSession()->open($targetUrl);
+                }
             }
         }
+
         return $this->getSession()->open($url);
     }
 
