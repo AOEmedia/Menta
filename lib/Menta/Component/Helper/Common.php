@@ -367,6 +367,24 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
     /**
      * @param string|array|\WebDriver\Element $element
      */
+    public function selectFirst($element) {
+        $element = $this->getElement($element);
+        $option = $element->element(\WebDriver\LocatorStrategy::XPATH, 'option[1]');
+        $option->click();
+    }
+
+    /**
+     * @param string|array|\WebDriver\Element $element
+     */
+    public function selectLast($element) {
+        $element = $this->getElement($element);
+        $option = $element->element(\WebDriver\LocatorStrategy::XPATH, 'option[last()]');
+        $option->click();
+    }
+
+    /**
+     * @param string|array|\WebDriver\Element $element
+     */
     public function selectAll($element) {
         $allOptions = $this->getAllOptions($element);
         foreach ($allOptions as $value => $label) {
