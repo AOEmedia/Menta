@@ -162,6 +162,25 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
     }
 
     /**
+     * Checks if body tag contains class
+     *
+     * @author Manish Jain
+     * @since 2015-06-18
+     * @param string $class
+     * @return boolean
+     */
+    public function assertBodyHasClass($class) {
+        $parent = $this;
+        if ($this->getHelperWait()->wait(function() use ($class, $parent) {
+                $actualClass = $parent->getHelperCommon()->getElement('tag=body')->attribute('class');
+                return strpos($actualClass, $class) !== false;
+            })) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Checks if an element has a class
      *
      * @author David Robinson <david.robinson@aoe.com>
