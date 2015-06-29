@@ -41,16 +41,30 @@ class Menta_SessionManager {
      * @return void
      */
     public static function init($serverUrl=NULL, $browser=NULL, array $additionalCapabilities=NULL) {
-        if (!is_null($serverUrl)) {
+        if (!self::_isEmptyValue($serverUrl)) {
             self::$serverUrl = $serverUrl;
         }
-        if (!is_null($browser)) {
+        if (!self::_isEmptyValue($browser)) {
             self::$browser = $browser;
         }
-        if (!is_null($additionalCapabilities)) {
+        if (!self::_isEmptyValue(($additionalCapabilities))) {
             self::$additionalCapabilities = $additionalCapabilities;
         }
     }
+
+	/**
+	 * Check if value is empty
+	 *
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function _isEmptyValue($value)
+	{
+		if (!is_null($value) && $value != '') {
+			return false;
+		}
+		return true;
+	}
 
 
     /**
