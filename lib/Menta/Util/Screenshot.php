@@ -71,6 +71,18 @@ class Menta_Util_Screenshot {
     }
 
     /**
+     * @param string|\WebDriver\Element $element
+     * @param string $color
+     *
+     * @author Manish Jain <manish.jain@aoe.com>
+     * @throws Exception
+     */
+    public function paintElement($element, $color='#0000ff') {
+        $commonHelper = Menta_ComponentManager::get('Menta_Component_Helper_Common'); /* @var $commonHelper Menta_Component_Helper_Common */
+        $this->addProcessingInstruction(new Menta_Util_Screenshot_RectangleProcessor($commonHelper->getElement($element), null, null, null, $color));
+    }
+
+    /**
      * Processes all processing instructions
      *
      */
