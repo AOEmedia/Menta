@@ -541,14 +541,34 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
     }
 
     /**
-     * Get value
+     * Get text from inner html
      *
      * @param string|array|\WebDriver\Element $element
      * @return string
      */
     public function getTextFromInnerHTML($element)
     {
-        return strip_tags($this->getElement($element)->getAttribute('innerHTML'));
+        return strip_tags($this->getInnerHtml($element));
+    }
+
+    /**
+     * Get inner HTML
+     *
+     * @param string|array|\WebDriver\Element $element
+     * @return string
+     */
+    public function getInnerHtml($element) {
+        return $this->getElement($element)->getAttribute('innerHTML');
+    }
+
+    /**
+     * Get outer HTML
+     *
+     * @param string|array|\WebDriver\Element $element
+     * @return string
+     */
+    public function getOuterHtml($element) {
+        return $this->getElement($element)->getAttribute('outerHTML');
     }
 }
 
