@@ -280,7 +280,8 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
      * @return string
      */
     public function getNewWindowHandle() {
-        return array_pop($this->getSession()->window_handles());
+        $handles = $this->getSession()->window_handles();
+        return array_pop($handles);
     }
 
     /**
