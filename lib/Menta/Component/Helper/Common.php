@@ -271,7 +271,36 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
      * @return void
      */
     public function focusWindow($windowHandle = 'main') {
-        $this->getSession()->window($windowHandle);
+        $this->getSession()->focusWindow($windowHandle);
+    }
+
+    /**
+     * Get window handle of newest window
+     *
+     * @return string
+     */
+    public function getNewWindowHandle() {
+        return array_pop($this->getSession()->window_handles());
+    }
+
+    /**
+     * Get window handle of currently focused window
+     *
+     * @return string
+     */
+    public function getCurrentWindowHandle() {
+        return $this->getSession()->window_handle();
+    }
+
+    /**
+     * Closes the newest window and sets focus back on orignal (first) window
+     *
+     * @return void
+     */
+    public function closeNewWindow() {
+        $this->focusWindow($this->getNewWindowHandle());
+        $this->getSession()->deleteWindow();
+        $this->focusWindow(array_shift($this->getSession()->window_handles()));
     }
 
     /**
