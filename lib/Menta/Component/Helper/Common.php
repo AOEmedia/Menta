@@ -259,9 +259,13 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
      * @param string $windowHandle
      * @return void
      */
-    public function resizeBrowserWindow($width = 1280, $height = 1024, $x = 0, $y = 0, $windowHandle = 'main') {
-        $this->getSession()->window($windowHandle)->position(array('x' => $x, 'y' => $y));
-        $this->getSession()->window($windowHandle)->size(array('width' => $width, 'height' => $height));
+    public function resizeBrowserWindow($width=1280, $height=1024, $x=0, $y=0, $windowHandle='current') {
+        if (!is_null($x) && !is_null($y)) {
+            $this->getSession()->window($windowHandle)->postPosition(array('x' => $x, 'y' => $y));
+        }
+        if (!is_null($width) && !is_null($height)) {
+            $this->getSession()->window($windowHandle)->postSize(array('width' => $width, 'height' => $height));
+        }
     }
 
     /**
@@ -270,7 +274,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
      * @param string $windowHandle
      * @return void
      */
-    public function focusWindow($windowHandle = 'main') {
+    public function focusWindow($windowHandle = 'current') {
         $this->getSession()->focusWindow($windowHandle);
     }
 
