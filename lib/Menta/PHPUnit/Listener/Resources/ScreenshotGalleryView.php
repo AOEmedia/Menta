@@ -7,7 +7,16 @@
  */
 class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUnit_Listener_Resources_HtmlResultView {
 
-    CONST THUMBNAIL_WIDTH = 400;
+    CONST THUMBNAIL_WIDTH = '30%';
+
+    /**
+     * Check if PDIFF is enabled
+     *
+     * @return bool
+     */
+    protected function pdiffEnabled() {
+        return Menta_ConfigurationPhpUnitVars::getInstance()->issetKey('report.pdiff_command');
+    }
 
     /**
      * Print test
@@ -111,79 +120,87 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
             $simpleImage = new Menta_Util_SimpleImage($directory . DIRECTORY_SEPARATOR . $fileName);
             $simpleImage->resizeToWidth(self::THUMBNAIL_WIDTH)->save($directory . DIRECTORY_SEPARATOR . $thumbnailName, IMAGETYPE_PNG);
 
-            $previousPath = $this->getPreviousPath();
-            $previousScreenshot = $previousPath . DIRECTORY_SEPARATOR . $fileName;
 
-            $printSingleFile = false;
+            $printSingleFile = true;
 
-            if ($previousPath && is_file($previousScreenshot)) {
-                if (md5_file($directory . DIRECTORY_SEPARATOR . $fileName) != md5_file($previousScreenshot)) {
+            if ($this->pdiffEnabled()) {
+                $printSingleFile = false; // instead of before/after widget
 
-                    $fileNamePrev = 'screenshot_' . $screenshot->getId() . '.prev.png';
-                    $thumbnailNamePrev = 'screenshot_' . $screenshot->getId() . '_thumb.prev.png';
+                $previousPath = $this->getPreviousPath();
+                $previousScreenshot = $previousPath . DIRECTORY_SEPARATOR . $fileName;
 
+                if ($previousPath && is_file($previousScreenshot)) {
+                    if (md5_file($directory . DIRECTORY_SEPARATOR . $fileName) != md5_file($previousScreenshot)) {
 
-                    // actual image
-                    if (file_exists($directory . DIRECTORY_SEPARATOR . $fileNamePrev)) {
-                        unlink($directory . DIRECTORY_SEPARATOR . $fileNamePrev);
-                    }
-                    link($previousScreenshot, $directory . DIRECTORY_SEPARATOR . $fileNamePrev);
-
-                    // thumbnail
-                    if (file_exists($directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev)) {
-                        unlink($directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev);
-                    }
-                    link($previousPath . DIRECTORY_SEPARATOR . $thumbnailName, $directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev);
-
-//                    $result .= '<a class="previous" title="'.$screenshot->getTitle().'" href="'.$fileNamePrev.'">';
-//                        $result .= '<img src="'.$thumbnailNamePrev.'" width="'.self::THUMBNAIL_WIDTH.'" />';
-//                    $result .= '</a>';
+                        $fileNamePrev = 'screenshot_' . $screenshot->getId() . '.prev.png';
+                        $thumbnailNamePrev = 'screenshot_' . $screenshot->getId() . '_thumb.prev.png';
 
 
-                    // before after viewer
-                    $size = getimagesize($directory . DIRECTORY_SEPARATOR . $thumbnailName);
-                    $id = uniqid('beforeafter_');
-                    $result .= '<div class="beforeafter">';
-                        $result .= '<div id="'.$id.'">';
-                            $result .= '<div><img alt="after" src="'.$fileName.'" width="'.self::THUMBNAIL_WIDTH.'" height="'.$size[1].'" /></div>';
-                            $result .= '<div><img alt="before" src="'.$fileNamePrev.'" width="'.self::THUMBNAIL_WIDTH.'" height="'.$size[1].'" /></div>';
+                        // actual image
+                        if (file_exists($directory . DIRECTORY_SEPARATOR . $fileNamePrev)) {
+                            unlink($directory . DIRECTORY_SEPARATOR . $fileNamePrev);
+                        }
+                        link($previousScreenshot, $directory . DIRECTORY_SEPARATOR . $fileNamePrev);
+
+                        // thumbnail
+                        if (file_exists($directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev)) {
+                            unlink($directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev);
+                        }
+                        link($previousPath . DIRECTORY_SEPARATOR . $thumbnailName, $directory . DIRECTORY_SEPARATOR . $thumbnailNamePrev);
+
+                        //                    $result .= '<a class="previous" title="'.$screenshot->getTitle().'" href="'.$fileNamePrev.'">';
+                        //                        $result .= '<img src="'.$thumbnailNamePrev.'" width="'.self::THUMBNAIL_WIDTH.'" />';
+                        //                    $result .= '</a>';
+
+
+                        // before after viewer
+                        $size = getimagesize($directory . DIRECTORY_SEPARATOR . $thumbnailName);
+                        $id = uniqid('beforeafter_');
+                        $result .= '<div class="beforeafter">';
+                        $result .= '<div id="' . $id . '">';
+                        $result .= '<div><img alt="after" src="' . $fileName . '" ' . $size[3] . ' /></div>';
+                        $result .= '<div><img alt="before" src="' . $fileNamePrev . '" ' . $size[3] . ' /></div>';
                         $result .= '</div>';
-                        $result .= '<script type="text/javascript">$(function(){ $("#'.$id.'").beforeAfter(); }); </script>';
-                    $result .= '</div>';
+                        $result .= '<script type="text/javascript">$(function(){ $("#' . $id . '").beforeAfter(); }); </script>';
+                        $result .= '</div>';
 
 
-                    $fileNameDiff = 'screenshot_' . $screenshot->getId() . '.diff.png';
-                    $thumbnailNameDiff = 'screenshot_' . $screenshot->getId() . '_thumb.diff.png';
+                        $fileNameDiff = 'screenshot_' . $screenshot->getId() . '.diff.png';
+                        $thumbnailNameDiff = 'screenshot_' . $screenshot->getId() . '_thumb.diff.png';
 
-                    $this->createPdiff(
-                        $directory . DIRECTORY_SEPARATOR . $fileNamePrev,
-                        $directory . DIRECTORY_SEPARATOR . $fileName,
-                        $directory . DIRECTORY_SEPARATOR . $fileNameDiff
-                    );
+                        $this->createPdiff(
+                            $directory . DIRECTORY_SEPARATOR . $fileNamePrev,
+                            $directory . DIRECTORY_SEPARATOR . $fileName,
+                            $directory . DIRECTORY_SEPARATOR . $fileNameDiff
+                        );
 
-                    // create thumbnail
-                    $simpleImage = new Menta_Util_SimpleImage($directory . DIRECTORY_SEPARATOR . $fileNameDiff);
-                    $simpleImage->resizeToWidth(self::THUMBNAIL_WIDTH)->save($directory . DIRECTORY_SEPARATOR . $thumbnailNameDiff, IMAGETYPE_PNG);
+                        // create thumbnail
+                        $simpleImage = new Menta_Util_SimpleImage($directory . DIRECTORY_SEPARATOR . $fileNameDiff);
+                        $simpleImage->resizeToWidth(self::THUMBNAIL_WIDTH)->save($directory . DIRECTORY_SEPARATOR . $thumbnailNameDiff, IMAGETYPE_PNG);
 
-                    $result .= '<a class="current" title="'.$screenshot->getTitle().'" href="'.$fileNameDiff.'">';
-                        $result .= '<img src="'.$thumbnailNameDiff.'" width="'.self::THUMBNAIL_WIDTH.'" />';
-                    $result .= '</a>';
+                        $size = getimagesize($directory . DIRECTORY_SEPARATOR . $thumbnailNameDiff);
+                        $result .= '<a class="current" title="' . $screenshot->getTitle() . '" href="' . $fileNameDiff . '">';
+                        $result .= '<img src="' . $thumbnailNameDiff . '" ' . $size[3] . ' />';
+                        $result .= '</a>';
 
 
+                    } else {
+                        $printSingleFile = true;
+                        $result .= '<div class="info">PDIFF: Exact match.</div>';
+                    }
+                } elseif ($previousPath && !is_file($previousScreenshot)) {
+                    $printSingleFile = true;
+                    $result .= '<div class="info">PDIFF: Couldn\'t find previous file</div>';
                 } else {
                     $printSingleFile = true;
-                    $result .= '<div class="info">PDIFF: Exact match.</div>';
+                    $result .= '<div class="info">PDIFF: Couldn\'t find previous path</div>';
                 }
-            } elseif ($previousPath && !is_file($previousScreenshot)) {
-                $printSingleFile = true;
-                $result .= '<div class="info">PDIFF: Couldn\'t find previous file</div>';
-            } else {
-                $printSingleFile = true;
-                $result .= '<div class="info">PDIFF: Couldn\'t find previous path</div>';
             }
+
             if ($printSingleFile) {
+                $size = getimagesize($directory . DIRECTORY_SEPARATOR . $thumbnailName);
                 $result .= '<a class="current" title="'.$screenshot->getTitle().'" href="'.$fileName.'">';
-                    $result .= '<img src="'.$thumbnailName.'" width="'.self::THUMBNAIL_WIDTH.' " />';
+                    $result .= '<img src="'.$thumbnailName.'" '.$size[3].' />';
                 $result .= '</a>';
             }
 
@@ -248,7 +265,9 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
 
         $result = '';
 
+
         foreach ($screenshots as $title => $listOfScreenshots) {
+            file_put_contents('/tmp/file', var_export($title, true), FILE_APPEND);
             $result .= '<div class="variants">';
                 $result .= '<h2 class="variants-title">' . $title . '</h2>';
                 foreach ($listOfScreenshots as $screenshotArray) {
@@ -256,11 +275,12 @@ class Menta_PHPUnit_Listener_Resources_ScreenshotGalleryView extends Menta_PHPUn
                     $screenshotObject = $screenshotArray['screenshotObject']; /* @var $screenshotObject Menta_Util_Screenshot */
 
                     $result .= '<div class="screenshot">';
+                        if ($variant = $screenshotObject->getVariant()) {
+                            $result .= '<div class="variant-label">' . $screenshotObject->getVariant() . '</div>';
+                        }
                         $result .= '<div class="screenshotwrapper">';
                             $result .= $this->printScreenshot($screenshotObject);
                         $result .= '</div>';
-                        $result .= '<br />';
-                        $result .= $screenshotObject->getVariant();
                     $result .= '</div>';
                 }
             $result .= '</div>';

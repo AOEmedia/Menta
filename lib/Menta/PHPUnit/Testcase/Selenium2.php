@@ -190,6 +190,7 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
             return false;
         }
         $screenshot = $this->getScreenShot();
+        $screenshot->setTitle($title);
         $screenshot->setTrace(!is_null($trace) ? $trace : debug_backtrace());
         if (!is_null($id)) { $screenshot->setId($id); }
         if (!is_null($description)) { $screenshot->setDescription($description); }

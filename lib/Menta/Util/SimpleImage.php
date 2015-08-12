@@ -132,8 +132,11 @@ class Menta_Util_SimpleImage {
      * @return Menta_Util_SimpleImage
      */
     public function resizeToWidth($width) {
+        if (substr($width, -1) == '%') {
+            return $this->scale(substr($width, 0, -1));
+        }
         $ratio = $width / $this->getWidth();
-        $height = $this->getheight() * $ratio;
+        $height = $this->getHeight() * $ratio;
         $this->resize($width, $height);
         return $this;
     }
@@ -141,12 +144,12 @@ class Menta_Util_SimpleImage {
     /**
      * Scale image by a given factor
      *
-     * @param $factor
+     * @param $factor percentage
      * @return Menta_Util_SimpleImage
      */
     public function scale($factor) {
-        $width = $this->getWidth() * $factor / 100;
-        $height = $this->getheight() * $factor / 100;
+        $width = round($this->getWidth() * $factor / 100);
+        $height = round($this->getHeight() * $factor / 100);
         $this->resize($width, $height);
         return $this;
     }

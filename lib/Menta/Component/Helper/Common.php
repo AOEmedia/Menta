@@ -269,6 +269,16 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
     }
 
     /**
+     * Get window size
+     *
+     * @param string $windowHandle
+     * @return array array('width' => 1280, 'height => 720);
+     */
+    public function getWindowSize($windowHandle='current') {
+        return $this->getSession()->window($windowHandle)->size();
+    }
+
+    /**
      * Focus window
      *
      * @param string $windowHandle
