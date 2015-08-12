@@ -112,13 +112,14 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
      * @param string|array|\WebDriver\Element $element
      * @param string $text
      * @param string $message
+     * @param bool $ignoreCase
      * @return void
      */
-    public function assertElementContainsText($element, $text, $message='') {
+    public function assertElementContainsText($element, $text, $message='', $ignoreCase=false) {
         if ($message == '') {
             $message = sprintf('Element "%s" does not contain text "%s"', $this->getHelperCommon()->element2String($element), $text);
         }
-        $this->getTest()->assertContains($text, $this->getHelperCommon()->getText($element), $message);
+        $this->getTest()->assertContains($text, $this->getHelperCommon()->getText($element), $message, $ignoreCase);
     }
 
     /**
@@ -128,9 +129,10 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
      * @param string $text
      * @param string $message
      * @param bool $trim
+     * @param bool $ignoreCase
      * @return void
      */
-    public function assertElementEqualsToText($element, $text, $message='', $trim=true) {
+    public function assertElementEqualsToText($element, $text, $message='', $trim=true, $ignoreCase=false) {
         if ($message == '') {
             $message = sprintf('Element "%s" does not equal to text "%s"', $this->getHelperCommon()->element2String($element), $text);
         }
@@ -138,7 +140,7 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
         if ($trim) {
             $actualText = trim($actualText);
         }
-        $this->getTest()->assertEquals($text, $actualText, $message);
+        $this->getTest()->assertEquals($text, $actualText, $message, 0, 10, false, $ignoreCase);
     }
 
     /**
