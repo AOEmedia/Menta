@@ -198,11 +198,22 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
     /**
      * Check if text is present
      *
-     * @param $text
+     * @param string $text
+     * @param bool $stripTags strip tags
+     * @param bool $ignoreCase ignore case
      * @return bool
      */
-    public function isTextPresent($text) {
-        return (strpos($this->getSession()->source(), $text) !== FALSE);
+    public function isTextPresent($text, $stripTags=false, $ignoreCase=false) {
+        $source = $this->getSession()->source();
+        if ($stripTags) {
+            $source = strip_tags($source);
+            $source = preg_replace('!\s+!', ' ', $source);
+        }
+        if ($ignoreCase) {
+            $source = strtolower($source);
+            $text = strtolower($text);
+        }
+        return (strpos($source, $text) !== FALSE);
     }
 
     /**

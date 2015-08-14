@@ -35,11 +35,11 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
      * @param string $message
      * @return void
      */
-    public function assertTextPresent($text, $message='') {
+    public function assertTextPresent($text, $message='', $stripTags=false, $ignoreCase=false) {
         if (empty($message)) {
             $message = "Text '$text' not found";
         }
-        $this->getTest()->assertTrue($this->getHelperCommon()->isTextPresent($text), $message);
+        $this->getTest()->assertTrue($this->getHelperCommon()->isTextPresent($text, $stripTags, $ignoreCase), $message);
     }
 
     /**

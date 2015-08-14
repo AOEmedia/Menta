@@ -125,7 +125,7 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
      * @return void
      */
     protected function onNotSuccessfulTest(Exception $e) {
-        if ($this->captureScreenshotOnFailure) {
+        if (!($e instanceof PHPUnit_Framework_IncompleteTestError || $e instanceof PHPUnit_Framework_SkippedTestError) && $this->captureScreenshotOnFailure) {
             try {
                 $this->takeScreenshot(
                     get_class($e),
