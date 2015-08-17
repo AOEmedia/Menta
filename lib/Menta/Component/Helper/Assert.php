@@ -123,6 +123,22 @@ class Menta_Component_Helper_Assert extends Menta_Component_AbstractTest {
     }
 
     /**
+     * Assert element does not containt text
+     *
+     * @param string|array|\WebDriver\Element $element
+     * @param string $text
+     * @param string $message
+     * @param bool $ignoreCase
+     * @return void
+     */
+    public function assertElementNotContainsText($element, $text, $message='', $ignoreCase=false) {
+        if ($message == '') {
+            $message = sprintf('Element "%s" does not contain text "%s"', $this->getHelperCommon()->element2String($element), $text);
+        }
+        $this->getTest()->assertNotContains($text, $this->getHelperCommon()->getText($element), $message, $ignoreCase);
+    }
+
+    /**
      * Assert element containts text
      *
      * @param string|array|\WebDriver\Element $element
