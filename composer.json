@@ -9,7 +9,7 @@
         {
             "name": "Fabrizio Branca",
             "email": "menta@firstname-lastname.de",
-            "homepage": "http://www.fabrizio-branca.de",
+            "homepage": "http://fbrnc.net",
             "role": "Developer"
         }
     ],
@@ -17,7 +17,7 @@
         "ext-curl": "*",
         "ext-gd": "*",
         "php": ">=5.3.2",
-        "phpunit/phpunit": "3.7.*",
+        "phpunit/phpunit": "4.8.*",
         "instaclick/php-webdriver": "dev-master"
     },
     "replace": {
