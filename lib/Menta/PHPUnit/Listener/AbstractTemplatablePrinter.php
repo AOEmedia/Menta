@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework/TestListener.php';
 
 /**
  * Templatable printer

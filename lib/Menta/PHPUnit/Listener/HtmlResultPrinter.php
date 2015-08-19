@@ -50,6 +50,10 @@ class Menta_PHPUnit_Listener_HtmlResultPrinter extends Menta_PHPUnit_Listener_Ab
         $this->lastResult = $e;
         $this->lastStatus = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
     }
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
+        $this->lastResult = $e;
+        $this->lastStatus = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
+    }
 
     public function getDocComment(PHPUnit_Framework_Test $test) {
         $class = new ReflectionClass($test);
