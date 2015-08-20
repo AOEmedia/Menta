@@ -13,12 +13,26 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
     /**
      * @var float default timeout in seconds
      */
-    protected $defaultTimeout = 30.0;
+    protected $defaultTimeout = 10.0;
 
     /**
      * @var int default sleep value in seconds
      */
     protected $defaultSleep = 1;
+
+    /**
+     * @var bool throw exception on timeout
+     */
+    protected $throwExceptionOnTimeout = true;
+
+    /**
+     * Set throw exception on timeout
+     *
+     * @param boolean $throwExceptionOnTimeout
+     */
+    public function setThrowExceptionOnTimeout($throwExceptionOnTimeout) {
+        $this->throwExceptionOnTimeout = $throwExceptionOnTimeout;
+    }
 
     /**
      * Set default timeout
@@ -50,6 +64,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
      * @param int $timeout in seconds
      * @param float $sleep in seconds
      * @return bool|mixed
+     * @throws Exception
      */
     public function wait($callback, $timeout=null, $sleep=null) {
         $timeout = is_null($timeout) ? $this->defaultTimeout : $timeout;
@@ -62,6 +77,9 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
             usleep(intval($sleep*1000000));
             $timeout -= $sleep;
         } while($timeout > 0);
+        if ($this->throwExceptionOnTimeout) {
+            throw new Exception('Wait timout');
+        }
         return false;
     }
 
