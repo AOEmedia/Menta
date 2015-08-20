@@ -56,25 +56,31 @@ class Menta_Util_Div
 
     /**
      * Replaces this pattern ###ENV:TEST### with the environment variable
+     * Supports fallback:
+     * ###ENV:VARNAME:FALLBACKVALUE###
      *
      * @param $string
      * @return string
      * @throws \Exception
      */
-    public static function replaceWithEnvironmentVariables($string)
-    {
+    public static function replaceWithEnvironmentVariables($string) {
         $matches = array();
-        while (preg_match('/###ENV:([^#]*)###/', $string, $matches)) {
-            if (!is_array($matches)) {
-                return $string;
-            }
-            if (getenv($matches[1]) === false) {
-                throw new \Exception('Expected an environment variable ' . $matches[1] . ' is not set');
-            }
-            $string = str_replace($matches[0], getenv($matches[1]), $string);
-            $matches = array();
+        preg_match_all('/###ENV:([^#:]+)(:([^#]+))?###/', $string, $matches, PREG_PATTERN_ORDER);
+        if (!is_array($matches) || !is_array($matches[0])) {
+            return $string;
         }
-
+        foreach ($matches[0] as $index => $completeMatch) {
+            $value = getenv($matches[1][$index]);
+            if ($value === false) {
+                // fallback if set
+                if (isset($matches[3][$index])) {
+                    $value = $matches[3][$index];
+                } else {
+                    throw new \Exception('Expected an environment variable ' . $matches[1][$index] . ' is not set');
+                }
+            }
+            $string = str_replace($completeMatch, $value, $string);
+        }
         return $string;
     }
 
