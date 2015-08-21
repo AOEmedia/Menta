@@ -189,6 +189,14 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
         if (!Menta_SessionManager::activeSessionExists()) {
             return false;
         }
+
+        // fire events
+        $eventParamaters = array(
+            'test' => $this
+            // we might want to add more stuff like title, description,... here
+        );
+        Menta_Events::dispatchEvent('before_taking_screenshot', $eventParamaters);
+
         $screenshot = $this->getScreenShot();
         $screenshot->setTitle($title);
         $screenshot->setTrace(!is_null($trace) ? $trace : debug_backtrace());
@@ -197,6 +205,7 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
         if (!is_null($type)) { $screenshot->setType($type); }
         if (!is_null($variant)) { $screenshot->setVariant($variant); }
         $this->screenshots[] = $screenshot;
+        Menta_Events::dispatchEvent('after_taking_screenshot', $eventParamaters);
         return $screenshot;
     }
 
