@@ -13,7 +13,7 @@ class Menta_Component_Helper_Wait extends Menta_Component_Abstract {
     /**
      * @var float default timeout in seconds
      */
-    protected $defaultTimeout = 10.0;
+    protected $defaultTimeout = 30.0;
 
     /**
      * @var int default sleep value in seconds
