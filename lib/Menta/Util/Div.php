@@ -64,6 +64,9 @@ class Menta_Util_Div
      * @throws \Exception
      */
     public static function replaceWithEnvironmentVariables($string) {
+        if (strpos($string, '###ENV:') === false) {
+            return $string;
+        }
         $matches = array();
         preg_match_all('/###ENV:([^#:]+)(:([^#]+))?###/', $string, $matches, PREG_PATTERN_ORDER);
         if (!is_array($matches) || !is_array($matches[0])) {
