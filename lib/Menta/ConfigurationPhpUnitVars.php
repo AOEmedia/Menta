@@ -49,12 +49,15 @@ class Menta_ConfigurationPhpUnitVars implements Menta_Interface_Configuration {
      * @param string $key
      * @return string
      */
-    public function getValue($key) {
+    public function getValue($key, $throwException=true) {
         if (empty($GLOBALS[__CLASS__.'_defaultsLoaded'])) {
             $this->loadDefaults();
         }
         if (!$this->issetKey($key)) {
-            throw new Exception(sprintf('Could not find configuration key "%s"', $key));
+            if ($throwException) {
+                throw new Exception(sprintf('Could not find configuration key "%s"', $key));
+            }
+            return null;
         }
 
         $value = $GLOBALS[$key];
