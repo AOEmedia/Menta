@@ -190,6 +190,10 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
             return false;
         }
 
+        if (Menta_ConfigurationPhpUnitVars::getInstance()->getValue('testing.selenium.skipScreenshots', false)) {
+            return false;
+        }
+
         // fire events
         $eventParamaters = array(
             'test' => $this
