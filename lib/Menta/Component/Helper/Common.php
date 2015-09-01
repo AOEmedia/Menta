@@ -574,7 +574,7 @@ class Menta_Component_Helper_Common extends Menta_Component_Abstract {
      * @param string $action
      * @param array $arguments
      *
-*@throws WebDriver\Exception\StaleElementReference
+     * @throws WebDriver\Exception\StaleElementReference
      * @return mixed
      */
     protected function doAction($element, $action, array $arguments = array()) {
