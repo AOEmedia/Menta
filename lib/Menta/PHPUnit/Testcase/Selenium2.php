@@ -166,7 +166,15 @@ abstract class Menta_PHPUnit_Testcase_Selenium2 extends PHPUnit_Framework_TestCa
         return $this->info;
     }
 
-
+    /**
+     * @param $label
+     * @return string
+     * @throws Exception
+     */
+    public function __($label) {
+        $translationHelper = Menta_ComponentManager::get('Menta_Component_Helper_Translation'); /* @var $translationHelper Menta_Component_Helper_Translation */
+        return $translationHelper->__($label);
+    }
 
     /**
      * METHODS IMPLEMENTING INTERFACE:

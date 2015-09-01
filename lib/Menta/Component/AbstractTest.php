@@ -24,6 +24,18 @@ abstract class Menta_Component_AbstractTest extends Menta_Component_Abstract {
     }
 
     /**
+     * Translate string
+     *
+     * @param $label
+     * @return string
+     * @throws Exception
+     */
+    public function __($label) {
+        return $this->getTest()->__($label);
+    }
+
+
+    /**
      * Get test object
      *
      * @return Menta_PHPUnit_Testcase_Selenium2
