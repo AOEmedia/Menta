@@ -178,11 +178,11 @@
             <?php foreach($this->get('count') as $status => $count): ?>
                 <?php $speakingStatus = $this->getStatusName($status); ?>
                 <li class="filter <?php echo $speakingStatus ?>">
-                    <input type="checkbox" checked="checked" id="type_<?php echo $speakingStatus ?>"><label for="type_<?php echo $speakingStatus ?>"><?php echo ucfirst($speakingStatus); ?> (<?php echo $count; ?>)</label>
+                    <input type="checkbox" checked="checked" id="type_<?php echo $speakingStatus ?>"/><label for="type_<?php echo $speakingStatus ?>"><?php echo ucfirst($speakingStatus); ?> (<?php echo $count; ?>)</label>
                 </li>
             <?php endforeach; ?>
             <li class="label">Features:</li>
-            <li><input type="checkbox" id="feature_duration"><label for="feature_duration">Duration Heatmap</label></li>
+            <li><input type="checkbox" id="feature_duration"/><label for="feature_duration">Duration Heatmap</label></li>
 
             <li class="label">Duration:</li>
             <li id="selected-duration"></li>
