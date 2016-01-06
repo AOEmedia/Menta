@@ -321,7 +321,7 @@ class Menta_PHPUnit_Listener_Resources_HtmlResultView extends Menta_Util_View {
         $result = '<div class="teststeps"><ol>';
         foreach ($testSteps as $testStepLog) {
             if ($testStepLog instanceof Menta_Util_Screenshot) {
-                $result .= '<li>' . $testStepLog->getDescription() . '<br>' . $this->renderScreenShot($testStepLog) . '</li>';
+                $result .= '<li>' . $testStepLog->getDescription() . '<br/>' . $this->renderScreenShot($testStepLog) . '</li>';
             } else {
                 $result .= '<li>' . $testStepLog . '</li>';
             }
